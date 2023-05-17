@@ -1,14 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice, current} from '@reduxjs/toolkit';
 
 const initialChannelsState = {
     ids: [],
     entities: [
-        {id: 1, name: 'General'},
-        {id: 2, name: 'Random'},
     ],
-    currentChannelId: 1
+    currentChannelId: 0,
+    channelToRename: {id: null, name: null},
 };
-//переименовать в channels
+
 const channelsSlice = createSlice({
     name: 'channels',
     initialState: initialChannelsState,
@@ -17,28 +16,43 @@ const channelsSlice = createSlice({
             state.entities.length = 0;
             state.entities.push(...action.payload);
         },
+        updateCurrentChannelId(state, action) {
+            state.currentChannelId = action.payload;
+        },
         addChannel(state, action) {
-            const { channel } = action.payload;
-
-            state.entities[channel.id] = channel;
-            state.ids.push(channel.id);
+            const { id, name } = action.payload;
+            state.entities.push({id, name, removable: true});
+            state.ids.push(id);
         },
         removeChannel(state, action) {
-            const { channelId } = action.payload;
-
-            delete state.entities[channelId];
+            const channelId = action.payload;
+            state.entities = state.entities.filter((channel) => channel.id !== channelId);
             state.ids = state.ids.filter((id) => id !== channelId);
+        },
+        renameChannel(state, action) {
+            const { id, name } = action.payload;
+            console.log('channel to rename (from actions):', id, name);
+            console.log('current state: ', current(state));
+            // TODO: Мгновенное переименование канала (сравнение некорректно)
+            const channelToRename = state.entities.find((channel) => {
+                console.log('Comparing channel with id:', channel.id);
+                console.log('to id:', id);
+                return channel.id === id;
+            });
+            if (channelToRename) {
+                console.dir('channel to rename:', channelToRename);
+            } else {
+                console.log('Channel not found.');
+            }
         },
         updateChannel(state, action) {
             const { channelId, data } = action.payload;
-
             Object.assign(state.entities[channelId], data);
         },
-        updateCurrentChannelId(state, action) {
-            const { channelId } = action.payload;
-
-            Object.assign(state.currentChannelId, channelId);
-        }
+        updateChannelToRename(state, action) {
+            const { id, name } = action.payload;
+            state.channelToRename = { id , name };
+        },
     },
 });
 

@@ -4,27 +4,23 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import AuthContext from '../contexts/index.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../hooks/index.jsx';
 
 const Login = () => {
     const schema = yup.string().length(8);
     const location = useLocation();
     const navigate = useNavigate();
     const auth = useAuth();
-    console.log('auth: ', auth);
     const handleChange = (event, formik) => {
         const { name, value } = event.target;
         formik.setFieldValue(name, value);
     };
     const handleSubmit = async (values) => {
-        console.log('submit called');
-        console.log('current values: ', values);
         try {
             axios.post('/api/v1/login', values)
                 .then((response) => {
                     const userData = response.data;
                     auth.logIn(userData);
-                    console.log('response data: ', response.data)
                 })
                 .catch((e) => {
                     console.log('error: ', e);
