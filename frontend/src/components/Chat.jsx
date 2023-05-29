@@ -10,34 +10,28 @@ import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import { actions as modalsActions } from "../slices/modalsSlice";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useNavigate} from "react-router-dom";
 import { io } from "socket.io-client";
 
 const Chat = () => {
     const auth = useAuth();
     const socketAPI = useSocketAPI();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // TODO: компонент Private Route (обертка для проверки авторизации) - испытания React Hooks
+    if (!auth.loggedIn){
+        navigate("/login");
+        //return;
+    }
     const { username } = auth.userData;
     const headers = auth.getAuthHeader();
     const [currentMessage, setCurrentMessage] = useState('');
-    const { initChannels, updateCurrentChannelId } = channelsActions;
-    const { initMessages } = messagesActions;
-    useSelector(state => { console.log('curState: ', state) });
     const currentModal = useSelector(state => state.modals.currentModal);
     const currentChannel = useSelector(state => state.channels.entities
         .find((channel) => channel.id === state.channels.currentChannelId));
     const messages = useSelector(state => state.messages.entities
         .filter((message) => message.channelId === currentChannel.id));
     const {id, name} =  useSelector(state => state.channels.channelToRename);
-    const onInputMessage = (e) => {
-        e.preventDefault();
-        setCurrentMessage(e.target.value);
-    }
-
-    const onSubmitMessage = (e) => {
-        e.preventDefault();
-        socketAPI.createMessage({body: currentMessage, channelId: currentChannel.id, username});
-    }
-
     useEffect(() => {
         axios.get(routes.dataPath(), { headers })
             .then((response) => {
@@ -50,6 +44,19 @@ const Chat = () => {
                 console.log('error: ', e);
             });
     }, []);
+    const { initChannels, updateCurrentChannelId } = channelsActions;
+    const { initMessages } = messagesActions;
+
+    const onInputMessage = (e) => {
+        e.preventDefault();
+        setCurrentMessage(e.target.value);
+    }
+
+    const onSubmitMessage = (e) => {
+        e.preventDefault();
+        socketAPI.createMessage({body: currentMessage, channelId: currentChannel.id, username});
+    }
+
     return (
         <div className="container-fluid">
         <div className="row h-100 d-flex bg-white flex-md-row">
@@ -92,6 +99,7 @@ const Chat = () => {
             </div>
             { currentModal==='add' ? <AddChannelModal/> : null }
             { currentModal==='rename' ? <RenameChannelModal id={id} oldName={name} /> : null }
+            {/*// TODO: Универсальное модальное окно */}
         </div>
     );
 }

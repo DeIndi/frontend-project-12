@@ -8,7 +8,7 @@ const AddChannelModal = () => {
     const dispatch = useDispatch();
     const socketAPI = useSocketAPI();
     const onClose = () => {
-
+        dispatch(modalsActions.changeCurrentModal(''));
     }
     const formik = useFormik({
         initialValues : {
@@ -22,6 +22,7 @@ const AddChannelModal = () => {
     });
     return (
         <>
+            <Modal show={true} onHide={onClose}>
             <Modal.Header>
                 <Modal.Title>Добавить канал</Modal.Title>
                 <Button
@@ -63,6 +64,7 @@ const AddChannelModal = () => {
                     </Form.Group>
                 </Form>
             </Modal.Body>
+            </Modal>
         </>
     );
 }

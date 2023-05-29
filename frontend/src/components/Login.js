@@ -5,10 +5,12 @@ import { useContext, useState } from 'react';
 import AuthContext from '../contexts/index.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/index.jsx';
+import routes from "../routes";
 
 const Login = () => {
     const schema = yup.string().length(8);
     const location = useLocation();
+
     const navigate = useNavigate();
     const auth = useAuth();
     const handleChange = (event, formik) => {
@@ -17,10 +19,11 @@ const Login = () => {
     };
     const handleSubmit = async (values) => {
         try {
-            axios.post('/api/v1/login', values)
+            axios.post(routes.loginPath(), values)
                 .then((response) => {
                     const userData = response.data;
                     auth.logIn(userData);
+                    navigate('/');
                 })
                 .catch((e) => {
                     console.log('error: ', e);
@@ -31,7 +34,7 @@ const Login = () => {
     };
     return (
         <div className="App">
-            <h1>Login</h1>
+            <h1>Вход</h1>
             <Formik
                 initialValues={{username: "", password: ""}}
                 onSubmit={(values)=>handleSubmit(values)}
@@ -41,7 +44,7 @@ const Login = () => {
                     <Form>
                         <Field name="username" onChange={(event) => handleChange(event, formik)} type="text"/>
                         <Field name="password" onChange={(event) => handleChange(event, formik)} type="text"/>
-                        <button type="submit">Submit</button>
+                        <button type="submit">Отправить</button>
                     </Form>
                 )}
             </Formik>
