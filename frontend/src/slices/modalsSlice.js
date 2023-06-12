@@ -4,6 +4,7 @@ const initialModalsState = {
     currentModal : '',
     currentData : null,
     isVisible : false,
+    targetChannel: {id: null, name: null}
 };
 
 const modalsSlice = createSlice({
@@ -13,7 +14,11 @@ const modalsSlice = createSlice({
         changeCurrentModal(state, action) {
             const currentModal = action.payload;
             state.currentModal = currentModal;
-        }
+        },
+        updateTargetChannel(state, action) {
+            const {id, name} = action.payload;
+            state.targetChannel = {id, name};
+        },
     },
 });
 

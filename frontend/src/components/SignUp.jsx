@@ -27,7 +27,6 @@ const SignUp = () => {
     const auth = useAuth();
     const handleSubmit = async (values, formik) => {
         console.log('values: ', values);
-        // Access formikBag properties
         console.log('formik.values:', formik.values);
         console.log('formik.resetForm:', formik.resetForm);
         console.log('formik.validateForm:', formik.validateForm);
@@ -38,7 +37,6 @@ const SignUp = () => {
         });
         try {
             const response = await axios.post(routes.signupPath(), values);
-            //await schema.validate(values, { abortEarly: false })
             console.log('response after registration: ', response.data);
             const userData = response.data;
             auth.logIn(userData);
@@ -80,6 +78,5 @@ const SignUp = () => {
         </div>
     );
 }
-// TODO: Сделать на bootstrap
 
 export default SignUp ;

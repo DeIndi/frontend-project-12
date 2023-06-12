@@ -1,10 +1,35 @@
 import { FormControl, Form, Button, Modal } from "react-bootstrap"
 import {useFormik} from "formik";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useAuth, useSocketAPI } from "../hooks";
 import {actions as modalsActions} from "../slices/modalsSlice";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
+
+const DispatchModal = () => {
+    const currentModal = useSelector(state => state.modals.currentModal);
+    //const {id, name} =  useSelector(state => state.channels.channelToRename);
+    const {id, name} =  useSelector(state => state.modals.targetChannel);
+    /*if (currentModal==='add'){
+        return AddChannelModal();
+    }
+    if (currentModal==='rename'){
+        return RenameChannelModal({id, name});
+    }*/
+    const modalComponents = {
+        add: <AddChannelModal />,
+        rename: <RenameChannelModal id={id} name={name} />
+    };
+
+    const ModalComponent = modalComponents[currentModal];
+
+    return ModalComponent ? ModalComponent : null;
+}
 
 const AddChannelModal = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const socketAPI = useSocketAPI();
     const onClose = () => {
@@ -15,9 +40,18 @@ const AddChannelModal = () => {
             name: '',
         },
         onSubmit: values => {
-            socketAPI.createChannel({name: values.name});
-            dispatch(modalsActions.changeCurrentModal(''));
-            formik.setSubmitting(false);
+            try {
+                console.log('Channel added');
+                socketAPI.createChannel({name: filter.clean(values.name)});
+                toast.success(t('channelModal.channelAddSuccess'));
+                dispatch(modalsActions.changeCurrentModal(''));
+                formik.setSubmitting(false);
+            }
+            catch {
+                console.log('Channel adding error');
+                toast.error(t('channelModal.channelAddFail'));
+            }
+
         },
     });
     return (
@@ -72,6 +106,7 @@ const AddChannelModal = () => {
 const RenameChannelModal = ({id, oldName}) => {
     const dispatch = useDispatch();
     const socketAPI = useSocketAPI();
+    const { t } = useTranslation();
     const onClose = () => {
 
     }
@@ -80,9 +115,17 @@ const RenameChannelModal = ({id, oldName}) => {
             name: '',
         },
         onSubmit: values => {
-            socketAPI.renameChannel({id, name: values.name });
-            formik.setSubmitting(false);
-            dispatch(modalsActions.changeCurrentModal(''));
+            try {
+                console.log('Channel renamed');
+                socketAPI.renameChannel({id, name: filter.clean(values.name) });
+                toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
+                formik.setSubmitting(false);
+                dispatch(modalsActions.changeCurrentModal(''));
+            }
+            catch (error) {
+                console.log('Channel renaming error');
+                toast.error(`${t('channelModal.channelRenameFail')}, ${filter.clean(values.name)}`);
+            }
         },
     });
     return (
@@ -132,4 +175,4 @@ const RenameChannelModal = ({id, oldName}) => {
     );
 }
 
-export { AddChannelModal, RenameChannelModal };
+export { DispatchModal, AddChannelModal, RenameChannelModal };

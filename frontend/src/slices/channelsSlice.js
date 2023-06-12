@@ -23,7 +23,6 @@ const channelsSlice = createSlice({
             const {id, name} = action.payload;
             console.log('channel to rename (from actions):', id, name);
             console.log('current state: ', current(state));
-            // TODO: Мгновенное переименование канала (сравнение некорректно)
             const channelToRename = state.entities.find((channel) => {
                 console.log('Comparing channel with id:', channel.id);
                 console.log('to id:', id);

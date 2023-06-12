@@ -17,6 +17,17 @@ import {server} from "websocket";
 import {actions as channelsActions} from './slices/channelsSlice.js';
 import {actions as messagesActions} from './slices/messagesSlice.js';
 import {useDispatch, useSelector} from 'react-redux';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import i18next, {createInstance} from 'i18next';
+import resources from './locales/index.js';
+import { useAuth } from './hooks/index.jsx';
+import {
+    Navigate,
+    useLocation,
+} from 'react-router-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import i18n from './i18n';
 
 const AuthProvider = ({children}) => {
     const localUserData = JSON.parse(localStorage.getItem('userData'));
@@ -85,10 +96,21 @@ const SocketAPIProvider = ({socket, store, children}) => {
 
 }
 
+const PrivateRoute = ({ children }) => {
+    const auth = useAuth();
+    const location = useLocation();
+    return (
+        auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    );
+};
+/*<PrivateRoute children={Chat} />,*/
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <Chat/>,
+        path: "",
+        element:
+            <PrivateRoute>
+                <Chat/>
+            </PrivateRoute>,
         errorElement: <ErrorPage/>,
     },
     {
@@ -101,20 +123,44 @@ const router = createBrowserRouter([
         element: <SignUp/>,
         errorElement: <ErrorPage/>,
     },
+    {
+        path: "*",
+        element: <ErrorPage/>,
+        errorElement: <ErrorPage/>,
+    },
 ]);
+// TODO: сделать через компонент (испытание)
 
-function App() {
+const init = async () => {
     const clientSocket = io(server);
+    const i18n = i18next.createInstance();
+        await i18n
+        .use(initReactI18next)
+        .init({
+            resources,
+            fallbackLng: 'ru',
+            interpolation: {
+                escapeValue: false,
+            },
+        });
+        console.log('i18 init: ', i18n);
     return (
+        <React.StrictMode>
+        <I18nextProvider i18n={i18n} >
         <Provider store={store}>
             <AuthProvider>
                 <SocketAPIProvider socket={clientSocket}>
                     <HeaderNavbar/>
-                    <RouterProvider router={router}/>
+                    <RouterProvider
+                        router={router}
+                        fallbackElement={<ErrorPage />}
+                    />
                 </SocketAPIProvider>
             </AuthProvider>
         </Provider>
+        </I18nextProvider>
+        </React.StrictMode>
     );
 }
 
-export default App;
+export default init;
