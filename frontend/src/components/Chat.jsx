@@ -48,13 +48,6 @@ const Chat = () => {
         console.log('currentMessage: ', currentMessage);
     }
 
-    /*const handleSubmit = (values, { resetForm }) => {
-        console.log('test string');
-        setCurrentMessage(filter.clean(currentMessage));
-        socketAPI.createMessage({body: values.body, channelId: currentChannel.id, username});
-        resetForm();
-    };*/
-
     const initialValues = {
         body: ""
     };

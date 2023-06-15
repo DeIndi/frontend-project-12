@@ -21,6 +21,8 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next, {createInstance} from 'i18next';
 import resources from './locales/index.js';
 import { useAuth } from './hooks/index.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+
 import {
     Navigate,
     useLocation,
@@ -88,13 +90,16 @@ const SocketAPIProvider = ({socket, store, children}) => {
         socket.emit('renameChannel', {id, name});
         dispatch(channelsActions.renameChannel({id, name}));
     }
+
     return (
         <SocketAPIContext.Provider value={{createMessage, createChannel, removeChannel, renameChannel}}>
             {children}
         </SocketAPIContext.Provider>
     );
-
 }
+// TODO: вынести отдельно обработчики socket.on
+
+// TODO: вынести сокет провайдер
 
 const PrivateRoute = ({ children }) => {
     const auth = useAuth();
@@ -106,7 +111,7 @@ const PrivateRoute = ({ children }) => {
 /*<PrivateRoute children={Chat} />,*/
 const router = createBrowserRouter([
     {
-        path: "",
+        path: "/",
         element:
             <PrivateRoute>
                 <Chat/>
@@ -129,7 +134,6 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage/>,
     },
 ]);
-// TODO: сделать через компонент (испытание)
 
 const init = async () => {
     const clientSocket = io(server);
@@ -155,6 +159,7 @@ const init = async () => {
                         router={router}
                         fallbackElement={<ErrorPage />}
                     />
+                    <ToastContainer />
                 </SocketAPIProvider>
             </AuthProvider>
         </Provider>

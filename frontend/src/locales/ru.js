@@ -11,15 +11,18 @@ export default {
         },
         modal: {
             close: 'Закрыть',
+            send: 'Отправить',
         },
         channelModal: {
             add: 'Добавить',
             remove: 'Удалить',
             rename: 'Переименовать',
-            channelAddSuccess: 'Канал успешно создан',
+            channelAddSuccess: 'Канал создан',
             channelAddFail: 'Не удалось создать канал',
-            channelRenameSuccess: 'Канал успешно переименован',
+            channelRenameSuccess: 'Канал переименован',
             channelRenameFail: 'Не удалось переименовать канал',
+            channelRemoveSuccess: 'Канал удалён',
+            channelRemoveFail: 'Не удалось удалить канал',
         },
         renameChannelModal: {
             rename: 'Переименовать',
@@ -29,11 +32,13 @@ export default {
           password: 'Пароль',
         },
         headerNavBar: {
-            header: 'Простой чат',
+            header: 'Hexlet Chat',
             register: 'Зарегистрироваться',
             login: 'Войти',
             logout: 'Выйти',
-            send: 'Отправить',
+        },
+        login: {
+          matchingProblem: 'Неверные имя пользователя или пароль',
         },
         signUp: {
           register: 'Зарегистрироваться',

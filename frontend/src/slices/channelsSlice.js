@@ -1,9 +1,9 @@
 import {createSlice, current} from '@reduxjs/toolkit';
 
 const initialChannelsState = {
-    ids: [], entities: [], currentChannelId: 0, channelToRename: {id: null, name: null},
+    ids: [], entities: [], currentChannelId: 0,
 };
-// TODO: Перенести данные по переименованию/удалению в слайс модальных окон
+
 const channelsSlice = createSlice({
     name: 'channels', initialState: initialChannelsState, reducers: {
         initChannels(state, action) {
@@ -11,6 +11,8 @@ const channelsSlice = createSlice({
             state.entities.push(...action.payload);
         }, updateCurrentChannelId(state, action) {
             state.currentChannelId = action.payload;
+        }, getCurrentChannelId(state) {
+            return state.currentChannelId;
         }, addChannel(state, action) {
             const {id, name} = action.payload;
             state.entities.push({id, name, removable: true});
@@ -37,10 +39,7 @@ const channelsSlice = createSlice({
         }, updateChannel(state, action) {
             const {channelId, data} = action.payload;
             Object.assign(state.entities[channelId], data);
-        }, updateChannelToRename(state, action) {
-            const {id, name} = action.payload;
-            state.channelToRename = {id, name};
-        },
+        }
     },
 });
 

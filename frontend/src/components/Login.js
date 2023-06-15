@@ -1,8 +1,6 @@
 import { Formik, Field, Input, Form, useFormik } from "formik";
 import * as yup from 'yup';
 import axios from 'axios';
-import { useContext, useState } from 'react';
-import AuthContext from '../contexts/index.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/index.jsx';
 import routes from "../routes";
@@ -27,6 +25,7 @@ const Login = () => {
                     const userData = response.data;
                     auth.logIn(userData);
                     navigate('/');
+                    navigate(0);
                 })
                 .catch((e) => {
                     console.log('error: ', e);
@@ -37,7 +36,6 @@ const Login = () => {
     };
     return (
         <div className="App">
-            <h1>{t('HeaderNavBar.login')}</h1>
             <Formik
                 initialValues={{username: "", password: ""}}
                 onSubmit={(values, formik)=>handleSubmit(values, formik)}

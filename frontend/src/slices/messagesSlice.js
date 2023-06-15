@@ -4,7 +4,7 @@ const initialMessagesState = {
     ids: [],
     entities: [],
 };
-
+// TODO: обработка из соседнего слайса (messages должен обрабатывать channels)
 const messagesSlice = createSlice({
     name: 'messages',
     initialState: initialMessagesState,

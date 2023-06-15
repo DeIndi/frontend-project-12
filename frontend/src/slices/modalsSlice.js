@@ -2,22 +2,34 @@ import {createSlice, current} from "@reduxjs/toolkit";
 
 const initialModalsState = {
     currentModal : '',
-    currentData : null,
     isVisible : false,
-    targetChannel: {id: null, name: null}
+    modalData: null,
 };
-
 const modalsSlice = createSlice({
     name: 'modals',
     initialState: initialModalsState,
     reducers: {
-        changeCurrentModal(state, action) {
+        /*changeCurrentModal(state, action) {
             const currentModal = action.payload;
             state.currentModal = currentModal;
+        },*/
+        /*updateModalData(state, action) {
+            console.log('action from updateModalData: ', action);
+            const { data } = action.payload;
+            console.log('data: ', data);
+            state.modalData = data;
+        },*/
+        openModal(state, action) {
+            console.log('action payload from openModal: ', action.payload);
+            const { modal, data} = action.payload;
+            state.modalData = data;
+            state.currentModal = modal;
+            state.isVisible = true;
         },
-        updateTargetChannel(state, action) {
-            const {id, name} = action.payload;
-            state.targetChannel = {id, name};
+        closeModal(state, action) {
+            console.log('action payload from closeModal: ', action.payload);
+            state.currentModal = '';
+            state.isVisible = false;
         },
     },
 });

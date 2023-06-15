@@ -7,25 +7,21 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+import {actions as messagesActions} from "../slices/messagesSlice";
 
 const DispatchModal = () => {
     const currentModal = useSelector(state => state.modals.currentModal);
-    //const {id, name} =  useSelector(state => state.channels.channelToRename);
-    const {id, name} =  useSelector(state => state.modals.targetChannel);
-    /*if (currentModal==='add'){
-        return AddChannelModal();
-    }
-    if (currentModal==='rename'){
-        return RenameChannelModal({id, name});
-    }*/
+    //const {id, name, channel} =  useSelector(state => state.modals.modalData);
+    let modalData = useSelector(state => state.modals.modalData);
     const modalComponents = {
-        add: <AddChannelModal />,
-        rename: <RenameChannelModal id={id} name={name} />
+        add: AddChannelModal,
+        rename: RenameChannelModal,
+        remove: RemoveChannelModal,
     };
 
     const ModalComponent = modalComponents[currentModal];
 
-    return ModalComponent ? ModalComponent : null;
+    return ModalComponent ? <ModalComponent modalData={modalData} /> : null;
 }
 
 const AddChannelModal = () => {
@@ -33,7 +29,7 @@ const AddChannelModal = () => {
     const dispatch = useDispatch();
     const socketAPI = useSocketAPI();
     const onClose = () => {
-        dispatch(modalsActions.changeCurrentModal(''));
+        dispatch(modalsActions.closeModal());
     }
     const formik = useFormik({
         initialValues : {
@@ -44,7 +40,7 @@ const AddChannelModal = () => {
                 console.log('Channel added');
                 socketAPI.createChannel({name: filter.clean(values.name)});
                 toast.success(t('channelModal.channelAddSuccess'));
-                dispatch(modalsActions.changeCurrentModal(''));
+                dispatch(modalsActions.closeModal());
                 formik.setSubmitting(false);
             }
             catch {
@@ -85,14 +81,14 @@ const AddChannelModal = () => {
                                 type="button"
                                 onClick={onClose}
                             >
-                                Закрыть
+                                {t('modal.close')}
                             </Button>
                             <Button
                                 variant="primary"
                                 type="submit"
                                 disabled={formik.isSubmitting}
                             >
-                                Отправить
+                                {t('modal.send')}
                             </Button>
                         </div>
                     </Form.Group>
@@ -103,12 +99,13 @@ const AddChannelModal = () => {
     );
 }
 
-const RenameChannelModal = ({id, oldName}) => {
+const RenameChannelModal = ({modalData}) => {
+    const { id } = modalData;
     const dispatch = useDispatch();
     const socketAPI = useSocketAPI();
     const { t } = useTranslation();
     const onClose = () => {
-
+        dispatch(modalsActions.closeModal());
     }
     const formik = useFormik({
         initialValues : {
@@ -120,7 +117,7 @@ const RenameChannelModal = ({id, oldName}) => {
                 socketAPI.renameChannel({id, name: filter.clean(values.name) });
                 toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
                 formik.setSubmitting(false);
-                dispatch(modalsActions.changeCurrentModal(''));
+                dispatch(modalsActions.closeModal());
             }
             catch (error) {
                 console.log('Channel renaming error');
@@ -130,8 +127,9 @@ const RenameChannelModal = ({id, oldName}) => {
     });
     return (
         <>
+            <Modal show={true} onHide={onClose}>
             <Modal.Header>
-                <Modal.Title>Переименовать канал {oldName}</Modal.Title>
+                <Modal.Title>{t('channelModal.rename')}</Modal.Title>
                 <Button
                     variant="close"
                     type="button"
@@ -158,19 +156,88 @@ const RenameChannelModal = ({id, oldName}) => {
                                 type="button"
                                 onClick={onClose}
                             >
-                                Закрыть
+                                {t('modal.close')}
                             </Button>
                             <Button
                                 variant="primary"
                                 type="submit"
                                 disabled={formik.isSubmitting}
                             >
-                                Отправить
+                                {t('modal.send')}
                             </Button>
                         </div>
                     </Form.Group>
                 </Form>
             </Modal.Body>
+            </Modal>
+        </>
+    );
+}
+
+const RemoveChannelModal = ({modalData}) => {
+    const dispatch = useDispatch();
+    const socketAPI = useSocketAPI();
+    const { t } = useTranslation();
+    const { id, channel } = modalData;
+    const onClose = () => {
+        dispatch(modalsActions.closeModal());
+    }
+    const formik = useFormik({
+        initialValues : {
+            name: '',
+        },
+        onSubmit: values => {
+            console.log('channel: ', channel);
+            if (channel.removable) {
+                try {
+                    socketAPI.removeChannel(id);
+                    toast.success(t('channelModal.channelRemoveSuccess'));
+                    formik.setSubmitting(false);
+                    dispatch(modalsActions.closeModal());
+                }
+                catch (e) {
+                    toast.error(t('channelModal.channelRemoveFail'));
+                }
+            }
+        },
+    });
+    return (
+        <>
+            <Modal show={true} onHide={onClose}>
+                <Modal.Header>
+                    <Modal.Title>{t('channelModal.rename')}</Modal.Title>
+                    <Button
+                        variant="close"
+                        type="button"
+                        onClick={onClose}
+                        aria-label="Close"
+                        data-bs-dismiss="modal"
+                    />
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={formik.handleSubmit}>
+                        <Form.Group>
+                            <div className="d-flex justify-content-end">
+                                <Button
+                                    className="me-2"
+                                    variant="secondary"
+                                    type="button"
+                                    onClick={onClose}
+                                >
+                                    {t('modal.close')}
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    type="submit"
+                                    disabled={formik.isSubmitting}
+                                >
+                                    {t('modal.send')}
+                                </Button>
+                            </div>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+            </Modal>
         </>
     );
 }

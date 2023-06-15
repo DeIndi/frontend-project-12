@@ -5,38 +5,44 @@ import {useAuth, useSocketAPI} from "../hooks";
 import {actions as channelsActions} from "../slices/channelsSlice"
 import {actions as messagesActions} from "../slices/messagesSlice"
 import {actions as modalsActions} from "../slices/modalsSlice";
-import {Dropdown} from "bootstrap";
 import {useTranslation} from 'react-i18next';
-import {DropdownButton, Button} from "react-bootstrap";
+import {DropdownButton, Button, ButtonGroup, Dropdown} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 export default function ChannelList() {
     const {t} = useTranslation();
     const channels = useSelector(state => state.channels.entities);
+    const currentChannelId = useSelector(state => state.channels.currentChannelId);
     const dispatch = useDispatch();
     const socketAPI = useSocketAPI();
     const onChangeChannel = (e, channelId) => {
         e.preventDefault();
         dispatch(channelsActions.updateCurrentChannelId(channelId));
     }
-    const onRemoveChannel = (e, channelId) => {
+    const onRemoveChannel = (e, id) => {
         e.preventDefault();
-        const channelToDelete = channels.find((channel) => channel.id === channelId);
-        if (channelToDelete.removable) {
-            socketAPI.removeChannel(channelId);
-            dispatch(messagesActions.removeChannelMessages(channelId));
-            dispatch(modalsActions.changeCurrentModal('remove'));
-        }
+        const channel = channels.find((channel) => channel.id === id);
+        /*if (channelToDelete.removable) {
+            try {
+                socketAPI.removeChannel(channelId);
+                dispatch(messagesActions.removeChannelMessages(channelId));
+                dispatch(modalsActions.changeCurrentModal('remove'));
+                toast.success(t('channelModal.channelRemoveSuccess'));
+            }
+            catch (e) {
+                toast.error(t('channelModal.channelRemoveFail'));
+            }
+        }*/
+        dispatch(modalsActions.openModal({modal: 'remove', data: {id, channel}}));
     }
     const onRenameChannel = (e, id, name) => {
         e.preventDefault();
-        dispatch(modalsActions.changeCurrentModal('rename'));
-        //dispatch(channelsActions.updateChannelToRename({id, name}));
-        dispatch(modalsActions.updateTargetChannel({id, name}));
+        dispatch(modalsActions.openModal({modal: 'rename', data: {id, name}}));
     }
 
     const onChannelAdd = (e) => {
         e.preventDefault();
-        dispatch(modalsActions.changeCurrentModal('add'));
+        dispatch(modalsActions.openModal({modal: 'add'}));
     }
 
     return (
@@ -57,38 +63,37 @@ export default function ChannelList() {
             </div>
             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
                 {channels.map((channel) =>
-                    <li key={channel.id} className="nav-item w-100 d-flex align-items-center">
-                        <Button
-                            onClick={(e) => {
-                                onChangeChannel(e, channel.id)
-                            }}
-                            type="button"
-                            className="vw-80 rounded-0 text-start btn btn-secondary flex-grow-1">
-                            <span className="me-1">#</span>
-                            {`${channel.name}`}
-                        </Button>
-                        <DropdownButton
-                            variant="secondary"
-                            id="dropdown-basic-button"
-                            title=""
-                            className="mr-3 rounded-0"
-                            drop="down"
-                        >
-                            <Dropdown.Item
+                    <li key={channel.id} className="nav-item w-100">
+                        <Dropdown as={ButtonGroup} className="d-flex overflow-visible">
+                            <Button
                                 onClick={(e) => {
-                                    onRenameChannel(e, channel.id, channel.name)
+                                    onChangeChannel(e, channel.id)
                                 }}
-                                href="#/action-1">
-                                Rename
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                onClick={(e) => {
-                                    onRemoveChannel(e, channel.id)
-                                }}
-                                href="#/action-1">
-                                Remove
-                            </Dropdown.Item>
-                        </DropdownButton>
+                                type="button"
+                                className={`vw-80 rounded-0 text-start text-truncate btn ${currentChannelId === channel.id ? "btn-secondary": "btn-light"} flex-grow-1`}>
+                                <span className="me-1">#</span>
+                                {`${channel.name}`}
+                            </Button>
+                            <Dropdown.Toggle split className={`flex-grow-0 overflow-visible ${currentChannelId === channel.id ? "btn-secondary": "btn-light"}`}>
+                                <span className="visually-hidden btn-secondary">{t('channels.menu')}</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className={ `overflow-visible ${currentChannelId === channel.id ? "btn-secondary": "btn-light"}` }>
+                                <Dropdown.Item
+                                    onClick={(e) => {
+                                        onRenameChannel(e, channel.id, channel.name)
+                                    }}
+                                    >
+                                    {t('channelModal.rename')}
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    onClick={(e) => {
+                                        onRemoveChannel(e, channel.id)
+                                    }}
+                                    >
+                                    {t('channelModal.remove')}
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </li>
                 )}
             </ul>
