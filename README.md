@@ -1,13 +1,14 @@
 ### Chat Project
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/DeIndi/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/DeIndi/frontend-project-12/actions)
+[![front12.js CI](https://github.com/DeIndi/frontend-project-12/actions/workflows/front12.js.yml/badge.svg)](https://github.com/DeIndi/frontend-project-12/actions/workflows/front12.js.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bb2d1223a5df42df1d2c/maintainability)](https://codeclimate.com/github/DeIndi/frontend-project-12/maintainability)
 
 Simple chat program. Lets users exchange text messages, switch channels, rename, delete and create new channels. Each action
 has corresponding alert (implemented with toastify). Program uses routing to give users access to different pages of the application.
 
-Vercel link:
-https://frontend-project-11-deindi.vercel.app/
+Railway link:
+(Currently unavailable)
 
 ## Requirements
 
