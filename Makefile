@@ -5,6 +5,6 @@ install:
 	cd ./frontend/; \
 	npm ci;
 build:
-	npm run build
+	npm run build --if-present
 start:
 	npm start
