@@ -11,7 +11,6 @@ import {actions as messagesActions} from "../slices/messagesSlice";
 
 const DispatchModal = () => {
     const currentModal = useSelector(state => state.modals.currentModal);
-    //const {id, name, channel} =  useSelector(state => state.modals.modalData);
     let modalData = useSelector(state => state.modals.modalData);
     const modalComponents = {
         add: AddChannelModal,
