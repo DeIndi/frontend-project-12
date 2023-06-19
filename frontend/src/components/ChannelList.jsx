@@ -64,7 +64,7 @@ export default function ChannelList() {
             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
                 {channels.map((channel) =>
                     <li key={channel.id} className="nav-item w-100">
-                        <Dropdown as={ButtonGroup} className="d-flex overflow-visible">
+                        <Dropdown as={ButtonGroup} className="d-flex">
                             <Button
                                 onClick={(e) => {
                                     onChangeChannel(e, channel.id)

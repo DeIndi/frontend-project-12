@@ -53,7 +53,7 @@ const Login = () => {
                                 <Field name="password" onChange={formik.handleChange} type="password" className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)} />
                             </div>
                             <div className="text-center mt-3 mb-0">
-                                <button type="submit" className="btn btn-primary">{t('headerNavBar.send')}</button>
+                                <button type="submit" className="btn btn-primary">{t('modal.send')}</button>
                             </div>
                         </Form>
                     </div>
