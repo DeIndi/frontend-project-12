@@ -3,7 +3,6 @@ import channelsReducer from './slices/channelsSlice'
 import usersReducer from './slices/usersSlice'
 import messagesReducer from './slices/messagesSlice'
 import modalsReducer from './slices/modalsSlice'
-import {configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
     channels: channelsReducer,

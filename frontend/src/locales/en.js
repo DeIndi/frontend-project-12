@@ -1,4 +1,4 @@
-export  default {
+export default {
     translation: {
         english: 'English',
         russian: 'Русский',

@@ -1,11 +1,8 @@
 import { Formik, Field, Input, Form, useFormik } from "formik";
 import * as yup from 'yup';
 import axios from 'axios';
-import { useContext, useState } from 'react';
-import AuthContext from '../contexts/index.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/index.jsx';
-import {useSocketAPI} from "../hooks/index.jsx";
 import routes from "../routes";
 import classNames from "classnames";
 

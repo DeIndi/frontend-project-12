@@ -1,7 +1,7 @@
-import { Formik, Field, Input, Form, useFormik } from "formik";
+import { Formik, Field, Form } from "formik";
 import * as yup from 'yup';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/index.jsx';
 import routes from "../routes";
 import { useTranslation } from 'react-i18next';
@@ -9,15 +9,14 @@ import classNames from "classnames";
 
 const Login = () => {
     const schema = yup.string().length(8);
-    const location = useLocation();
     const {t} = useTranslation();
 
     const navigate = useNavigate();
     const auth = useAuth();
-    const handleChange = (event, formik) => {
+    /*const handleChange = (event, formik) => {
         const { name, value } = event.target;
         formik.setFieldValue(name, value);
-    };
+    };*/
     const handleSubmit = async (values) => {
         try {
             axios.post(routes.loginPath(), values)

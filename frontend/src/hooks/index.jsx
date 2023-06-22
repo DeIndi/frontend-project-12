@@ -4,10 +4,8 @@ import {AuthContext, ChannelModalContext, SocketAPIContext} from '../contexts/in
 
 const useAuth = () => useContext(AuthContext);
 const useSocketAPI = () => useContext(SocketAPIContext);
-const useChannelModal = () => useContext(ChannelModalContext);
 
 export {
     useAuth,
     useSocketAPI,
-    useChannelModal
 };

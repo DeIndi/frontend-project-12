@@ -1,13 +1,12 @@
-import { FormControl, Form, Button, Modal } from "react-bootstrap"
+import { Form, Button, Modal } from "react-bootstrap"
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import { useAuth, useSocketAPI } from "../hooks";
+import { useSocketAPI } from "../hooks";
 import {actions as modalsActions} from "../slices/modalsSlice";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
-import {actions as messagesActions} from "../slices/messagesSlice";
 
 const DispatchModal = () => {
     const currentModal = useSelector(state => state.modals.currentModal);

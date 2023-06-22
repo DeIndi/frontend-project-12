@@ -3,11 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useAuth, useSocketAPI} from "../hooks";
 import {actions as channelsActions} from "../slices/channelsSlice"
-import {actions as messagesActions} from "../slices/messagesSlice"
 import {actions as modalsActions} from "../slices/modalsSlice";
 import {useTranslation} from 'react-i18next';
-import {DropdownButton, Button, ButtonGroup, Dropdown} from "react-bootstrap";
-import {toast} from "react-toastify";
+import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
 
 export default function ChannelList() {
     const {t} = useTranslation();
@@ -22,17 +20,6 @@ export default function ChannelList() {
     const onRemoveChannel = (e, id) => {
         e.preventDefault();
         const channel = channels.find((channel) => channel.id === id);
-        /*if (channelToDelete.removable) {
-            try {
-                socketAPI.removeChannel(channelId);
-                dispatch(messagesActions.removeChannelMessages(channelId));
-                dispatch(modalsActions.changeCurrentModal('remove'));
-                toast.success(t('channelModal.channelRemoveSuccess'));
-            }
-            catch (e) {
-                toast.error(t('channelModal.channelRemoveFail'));
-            }
-        }*/
         dispatch(modalsActions.openModal({modal: 'remove', data: {id, channel}}));
     }
     const onRenameChannel = (e, id, name) => {

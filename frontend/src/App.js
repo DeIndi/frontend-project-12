@@ -18,18 +18,16 @@ import {actions as channelsActions} from './slices/channelsSlice.js';
 import {actions as messagesActions} from './slices/messagesSlice.js';
 import {useDispatch, useSelector} from 'react-redux';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import i18next, {createInstance} from 'i18next';
+import i18next from 'i18next';
 import resources from './locales/index.js';
 import { useAuth } from './hooks/index.jsx';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import {
     Navigate,
     useLocation,
 } from 'react-router-dom';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import i18n from './i18n';
 
 const AuthProvider = ({children}) => {
     const localUserData = JSON.parse(localStorage.getItem('userData'));
@@ -56,7 +54,7 @@ const AuthProvider = ({children}) => {
     );
 }
 
-const socketServer = 'http://localhost:5001';
+/*const socketServer = 'http://localhost:5001';*/
 
 const SocketAPIProvider = ({socket, store, children}) => {
     const dispatch = useDispatch();
