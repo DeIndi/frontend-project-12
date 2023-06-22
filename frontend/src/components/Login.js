@@ -2,7 +2,7 @@ import { Formik, Field, Form } from "formik";
 import * as yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/index.jsx';
+import { useAuth } from '../hooks';
 import routes from "../routes";
 import { useTranslation } from 'react-i18next';
 import classNames from "classnames";

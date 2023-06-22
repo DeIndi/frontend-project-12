@@ -3,12 +3,11 @@ import axios from "axios";
 import { useAuth, useSocketAPI } from "../hooks";
 import routes from "../routes";
 import ChannelList from "./ChannelList";
-import { DispatchModal, AddChannelModal, RenameChannelModal } from "./ChannelModal";
+import { DispatchModal } from "./ChannelModal";
 import {useDispatch, useSelector} from 'react-redux';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import {Formik, Form, Field} from "formik";
 import filter from 'leo-profanity';
@@ -17,11 +16,10 @@ const Chat = () => {
     const auth = useAuth();
     const socketAPI = useSocketAPI();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const { username } = auth.userData;
     const headers = auth.getAuthHeader();
-    const [currentMessage, setCurrentMessage] = useState('');
+    const [currentMessage] = useState('');
     const currentChannel = useSelector(state => state.channels.entities
         .find((channel) => channel.id === state.channels.currentChannelId));
     const messages = useSelector(state => state.messages.entities

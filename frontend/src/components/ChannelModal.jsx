@@ -1,6 +1,6 @@
 import { Form, Button, Modal } from "react-bootstrap"
 import {useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import { useSocketAPI } from "../hooks";
 import {actions as modalsActions} from "../slices/modalsSlice";
 import { toast } from 'react-toastify';

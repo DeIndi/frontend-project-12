@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useAuth, useSocketAPI} from "../hooks";
+import { useSocketAPI } from "../hooks";
 import {actions as channelsActions} from "../slices/channelsSlice"
 import {actions as modalsActions} from "../slices/modalsSlice";
 import {useTranslation} from 'react-i18next';
@@ -12,7 +12,6 @@ export default function ChannelList() {
     const channels = useSelector(state => state.channels.entities);
     const currentChannelId = useSelector(state => state.channels.currentChannelId);
     const dispatch = useDispatch();
-    const socketAPI = useSocketAPI();
     const onChangeChannel = (e, channelId) => {
         e.preventDefault();
         dispatch(channelsActions.updateCurrentChannelId(channelId));

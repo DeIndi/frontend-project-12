@@ -1,6 +1,6 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import {Container, Button} from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import {useAuth} from "../hooks";
 import { useTranslation } from 'react-i18next';
 
