@@ -19,7 +19,6 @@ const Chat = () => {
     const { t } = useTranslation();
     const { username } = auth.userData;
     const headers = auth.getAuthHeader();
-    const [currentMessage] = useState('');
     const currentChannel = useSelector(state => state.channels.entities
         .find((channel) => channel.id === state.channels.currentChannelId));
     const messages = useSelector(state => state.messages.entities
