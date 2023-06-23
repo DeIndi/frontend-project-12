@@ -1,4 +1,4 @@
-export default {
+const localeRu = {
     translation: {
         english: 'English',
         russian: 'Русский',
@@ -52,3 +52,5 @@ export default {
         },
     },
 };
+
+export default localeRu;

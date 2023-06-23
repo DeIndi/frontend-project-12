@@ -1,7 +1,6 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useSocketAPI } from "../hooks";
 import {actions as channelsActions} from "../slices/channelsSlice"
 import {actions as modalsActions} from "../slices/modalsSlice";
 import {useTranslation} from 'react-i18next';
