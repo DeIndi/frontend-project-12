@@ -31,7 +31,7 @@ export default function ChannelList() {
     }
 
     return (
-        <div className="col-2 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex" id="channel-list">
+        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex" id="channel-list">
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4"><b>{t('channelList.channels')}</b>
                 <button onClick={(e) => {
                     onChannelAdd(e)

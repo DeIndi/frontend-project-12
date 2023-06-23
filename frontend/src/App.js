@@ -59,14 +59,18 @@ const AuthProvider = ({children}) => {
 const SocketAPIProvider = ({socket, store, children}) => {
     const dispatch = useDispatch();
     const currChannelId = useSelector(state => state.channels.currentChannelId);
+    socket.on('newMessage', (payload) => {
+        const { body, channelId, id, username } = payload;
+        dispatch(messagesActions.addMessage({ body, channelId, id, username }));
+    });
     const createMessage = ({body, channelId, username}) => {
         socket.emit('newMessage', {body, channelId, username},
             () => {
-                socket.on('newMessage', (payload) => {
+                /*socket.on('newMessage', (payload) => {
                         const {id} = payload;
                         dispatch(messagesActions.addMessage({body, channelId, id, username}));
                     }
-                );
+                );*/
             });
     }
     const createChannel = ({name}) => {
@@ -95,6 +99,7 @@ const SocketAPIProvider = ({socket, store, children}) => {
         </SocketAPIContext.Provider>
     );
 }
+
 // TODO: вынести отдельно обработчики socket.on
 
 // TODO: вынести сокет провайдер

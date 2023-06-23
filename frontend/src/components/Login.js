@@ -13,10 +13,6 @@ const Login = () => {
 
     const navigate = useNavigate();
     const auth = useAuth();
-    /*const handleChange = (event, formik) => {
-        const { name, value } = event.target;
-        formik.setFieldValue(name, value);
-    };*/
     const handleSubmit = async (values) => {
         try {
             axios.post(routes.loginPath(), values)

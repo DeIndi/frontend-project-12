@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import {Formik, Form, Field} from "formik";
 import filter from 'leo-profanity';
+import { Container } from "react-bootstrap";
 
 const Chat = () => {
     const auth = useAuth();
@@ -43,7 +44,8 @@ const Chat = () => {
     };
 
     return (
-        <div className="container-fluid">
+      <div className="d-flex justify-content-center align-items-center" style = {{height:"100vh", width:"80vw"}}>
+        <Container fluid style={{ height:'90%', width: '80%' }}>
             <div className="row h-100 d-flex bg-white flex-md-row">
                 <ChannelList/>
                 <div className="col-4 col-md-4 d-flex flex-column h-100 flex-grow-1">
@@ -107,7 +109,8 @@ const Chat = () => {
                 </div>
             </div>
             <DispatchModal/>
-        </div>
+        </Container>
+      </div>
     );
 }
 export default  Chat;
