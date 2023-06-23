@@ -25,6 +25,7 @@ const Chat = () => {
     const messages = useSelector(state => state.messages.entities
         .filter((message) => message.channelId === currentChannel.id));
     useEffect(() => {
+      console.log('Use Effect from Chat');
         axios.get(routes.dataPath(), { headers })
             .then((response) => {
                 const {  currentChannelId, channels, messages } = response.data;
@@ -35,7 +36,8 @@ const Chat = () => {
             .catch((e) => {
                 console.log('error: ', e);
             });
-    });
+    }, []);
+    // TODO: отключить правило на набор зависимостей
     const { initChannels, updateCurrentChannelId } = channelsActions;
     const { initMessages } = messagesActions;
 

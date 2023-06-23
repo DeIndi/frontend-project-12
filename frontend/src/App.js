@@ -66,11 +66,6 @@ const SocketAPIProvider = ({socket, store, children}) => {
     const createMessage = ({body, channelId, username}) => {
         socket.emit('newMessage', {body, channelId, username},
             () => {
-                /*socket.on('newMessage', (payload) => {
-                        const {id} = payload;
-                        dispatch(messagesActions.addMessage({body, channelId, id, username}));
-                    }
-                );*/
             });
     }
     const createChannel = ({name}) => {
@@ -100,8 +95,6 @@ const SocketAPIProvider = ({socket, store, children}) => {
     );
 }
 
-// TODO: вынести отдельно обработчики socket.on
-
 // TODO: вынести сокет провайдер
 
 const PrivateRoute = ({ children }) => {
@@ -111,7 +104,7 @@ const PrivateRoute = ({ children }) => {
         auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
     );
 };
-/*<PrivateRoute children={Chat} />,*/
+
 const router = createBrowserRouter([
     {
         path: "/",

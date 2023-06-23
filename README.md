@@ -1,7 +1,7 @@
 ### Chat Project
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/DeIndi/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/DeIndi/frontend-project-12/actions)
-[![front12.js CI](https://github.com/DeIndi/frontend-project-12/actions/workflows/front12.js.yml/badge.svg)](https://github.com/DeIndi/frontend-project-12/actions/workflows/front12.js.yml)
+[![node CI](https://github.com/DeIndi/frontend-project-12/actions/workflows/nodeCI.yml/badge.svg)](https://github.com/DeIndi/frontend-project-12/actions/workflows/nodeCI.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bb2d1223a5df42df1d2c/maintainability)](https://codeclimate.com/github/DeIndi/frontend-project-12/maintainability)
 
 Simple chat program. Lets users exchange text messages, switch channels, rename, delete and create new channels. Each action
