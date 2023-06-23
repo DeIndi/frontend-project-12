@@ -39,11 +39,6 @@ const Chat = () => {
     const { initChannels, updateCurrentChannelId } = channelsActions;
     const { initMessages } = messagesActions;
 
-    const onInputMessage = (e) => {
-        e.preventDefault();
-        console.log('currentMessage: ', currentMessage);
-    }
-
     const initialValues = {
         body: ""
     };
