@@ -1,39 +1,40 @@
-import { Formik, Field, Form } from "formik";
+import React from 'react';
+import { Formik, Field, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks';
-import routes from "../routes";
 import { useTranslation } from 'react-i18next';
-import classNames from "classnames";
+import classNames from 'classnames';
+import { useAuth } from '../hooks';
+import routes from '../routes';
 
 const Login = () => {
-    const schema = yup.string().length(8);
-    const {t} = useTranslation();
+  const schema = yup.string().length(8);
+  const { t } = useTranslation();
 
-    const navigate = useNavigate();
-    const auth = useAuth();
-    const handleSubmit = async (values) => {
-        try {
-            axios.post(routes.loginPath(), values)
-                .then((response) => {
-                    const userData = response.data;
-                    auth.logIn(userData);
-                    navigate('/');
-                    navigate(0);
-                })
-                .catch((e) => {
-                    console.log('error: ', e);
-                });
-        } catch (e) {
-            console.error(e);
-        }
-    };
-    return (
+  const navigate = useNavigate();
+  const auth = useAuth();
+  const handleSubmit = async (values) => {
+    try {
+      axios.post(routes.loginPath(), values)
+        .then((response) => {
+          const userData = response.data;
+          auth.logIn(userData);
+          navigate('/');
+          navigate(0);
+        })
+        .catch((e) => {
+          console.log('error: ', e);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  return (
         <div className="App">
             <Formik
-                initialValues={{username: "", password: ""}}
-                onSubmit={(values, formik)=>handleSubmit(values, formik)}
+                initialValues={{ username: '', password: '' }}
+                onSubmit={(values, formik) => handleSubmit(values, formik)}
                 validationSchema={schema}
             >
                 {(formik) => (
@@ -55,7 +56,7 @@ const Login = () => {
                 )}
             </Formik>
         </div>
-    );
-}
+  );
+};
 
-export default Login ;
+export default Login;

@@ -1,54 +1,39 @@
-import { Form, Button, Modal } from "react-bootstrap"
-import {useFormik} from "formik";
-import {useDispatch, useSelector } from "react-redux";
-import { useSocketAPI } from "../hooks";
-import {actions as modalsActions} from "../slices/modalsSlice";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+import { Form, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 import filter from 'leo-profanity';
-
-const DispatchModal = () => {
-    const currentModal = useSelector(state => state.modals.currentModal);
-    let modalData = useSelector(state => state.modals.modalData);
-    const modalComponents = {
-        add: AddChannelModal,
-        rename: RenameChannelModal,
-        remove: RemoveChannelModal,
-    };
-
-    const ModalComponent = modalComponents[currentModal];
-
-    return ModalComponent ? <ModalComponent modalData={modalData} /> : null;
-}
+import { useSocketAPI } from '../hooks';
+import { actions as modalsActions } from '../slices/modalsSlice';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddChannelModal = () => {
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const socketAPI = useSocketAPI();
-    const onClose = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const socketAPI = useSocketAPI();
+  const onClose = () => {
+    dispatch(modalsActions.closeModal());
+  };
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+    },
+    onSubmit: (values) => {
+      try {
+        console.log('Channel added');
+        socketAPI.createChannel({ name: filter.clean(values.name) });
+        toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
-    }
-    const formik = useFormik({
-        initialValues : {
-            name: '',
-        },
-        onSubmit: values => {
-            try {
-                console.log('Channel added');
-                socketAPI.createChannel({name: filter.clean(values.name)});
-                toast.success(t('channelModal.channelAddSuccess'));
-                dispatch(modalsActions.closeModal());
-                formik.setSubmitting(false);
-            }
-            catch {
-                console.log('Channel adding error');
-                toast.error(t('channelModal.channelAddFail'));
-            }
-
-        },
-    });
-    return (
+        formik.setSubmitting(false);
+      } catch {
+        console.log('Channel adding error');
+        toast.error(t('channelModal.channelAddFail'));
+      }
+    },
+  });
+  return (
         <>
             <Modal show={true} onHide={onClose}>
             <Modal.Header>
@@ -94,36 +79,35 @@ const AddChannelModal = () => {
             </Modal.Body>
             </Modal>
         </>
-    );
-}
+  );
+};
 
-const RenameChannelModal = ({modalData}) => {
-    const { id } = modalData;
-    const dispatch = useDispatch();
-    const socketAPI = useSocketAPI();
-    const { t } = useTranslation();
-    const onClose = () => {
+const RenameChannelModal = ({ modalData }) => {
+  const { id } = modalData;
+  const dispatch = useDispatch();
+  const socketAPI = useSocketAPI();
+  const { t } = useTranslation();
+  const onClose = () => {
+    dispatch(modalsActions.closeModal());
+  };
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+    },
+    onSubmit: (values) => {
+      try {
+        console.log('Channel renamed');
+        socketAPI.renameChannel({ id, name: filter.clean(values.name) });
+        toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
+        formik.setSubmitting(false);
         dispatch(modalsActions.closeModal());
-    }
-    const formik = useFormik({
-        initialValues : {
-            name: '',
-        },
-        onSubmit: values => {
-            try {
-                console.log('Channel renamed');
-                socketAPI.renameChannel({id, name: filter.clean(values.name) });
-                toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
-                formik.setSubmitting(false);
-                dispatch(modalsActions.closeModal());
-            }
-            catch (error) {
-                console.log('Channel renaming error');
-                toast.error(`${t('channelModal.channelRenameFail')}, ${filter.clean(values.name)}`);
-            }
-        },
-    });
-    return (
+      } catch (error) {
+        console.log('Channel renaming error');
+        toast.error(`${t('channelModal.channelRenameFail')}, ${filter.clean(values.name)}`);
+      }
+    },
+  });
+  return (
         <>
             <Modal show={true} onHide={onClose}>
             <Modal.Header>
@@ -169,37 +153,36 @@ const RenameChannelModal = ({modalData}) => {
             </Modal.Body>
             </Modal>
         </>
-    );
-}
+  );
+};
 
-const RemoveChannelModal = ({modalData}) => {
-    const dispatch = useDispatch();
-    const socketAPI = useSocketAPI();
-    const { t } = useTranslation();
-    const { id, channel } = modalData;
-    const onClose = () => {
-        dispatch(modalsActions.closeModal());
-    }
-    const formik = useFormik({
-        initialValues : {
-            name: '',
-        },
-        onSubmit: values => {
-            console.log('channel: ', channel);
-            if (channel.removable) {
-                try {
-                    socketAPI.removeChannel(id);
-                    toast.success(t('channelModal.channelRemoveSuccess'));
-                    formik.setSubmitting(false);
-                    dispatch(modalsActions.closeModal());
-                }
-                catch (e) {
-                    toast.error(t('channelModal.channelRemoveFail'));
-                }
-            }
-        },
-    });
-    return (
+const RemoveChannelModal = ({ modalData }) => {
+  const dispatch = useDispatch();
+  const socketAPI = useSocketAPI();
+  const { t } = useTranslation();
+  const { id, channel } = modalData;
+  const onClose = () => {
+    dispatch(modalsActions.closeModal());
+  };
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+    },
+    onSubmit: () => {
+      console.log('channel: ', channel);
+      if (channel.removable) {
+        try {
+          socketAPI.removeChannel(id);
+          toast.success(t('channelModal.channelRemoveSuccess'));
+          formik.setSubmitting(false);
+          dispatch(modalsActions.closeModal());
+        } catch (e) {
+          toast.error(t('channelModal.channelRemoveFail'));
+        }
+      }
+    },
+  });
+  return (
         <>
             <Modal show={true} onHide={onClose}>
                 <Modal.Header>
@@ -237,7 +220,20 @@ const RemoveChannelModal = ({modalData}) => {
                 </Modal.Body>
             </Modal>
         </>
-    );
-}
+  );
+};
 
+const DispatchModal = () => {
+  const currentModal = useSelector((state) => state.modals.currentModal);
+  const modalData = useSelector((state) => state.modals.modalData);
+  const modalComponents = {
+    add: AddChannelModal,
+    rename: RenameChannelModal,
+    remove: RemoveChannelModal,
+  };
+
+  const ModalComponent = modalComponents[currentModal];
+
+  return ModalComponent ? <ModalComponent modalData={modalData} /> : null;
+};
 export { DispatchModal, AddChannelModal, RenameChannelModal };

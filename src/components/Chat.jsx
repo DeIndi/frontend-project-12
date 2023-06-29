@@ -1,53 +1,52 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { useAuth, useSocketAPI } from "../hooks";
-import routes from "../routes";
-import ChannelList from "./ChannelList";
-import { DispatchModal } from "./ChannelModal";
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { Formik, Form, Field } from 'formik';
+import filter from 'leo-profanity';
+import { Container } from 'react-bootstrap';
+import { useAuth, useSocketAPI } from '../hooks';
+import routes from '../routes';
+import ChannelList from './ChannelList';
+import { DispatchModal } from './ChannelModal';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useTranslation } from 'react-i18next';
-import {Formik, Form, Field} from "formik";
-import filter from 'leo-profanity';
-import { Container } from "react-bootstrap";
 
 const Chat = () => {
-    const auth = useAuth();
-    const socketAPI = useSocketAPI();
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
-    const { username } = auth.userData;
-    const headers = auth.getAuthHeader();
-    const currentChannel = useSelector(state => state.channels.entities
-        .find((channel) => channel.id === state.channels.currentChannelId));
-    const messages = useSelector(state => state.messages.entities
-        .filter((message) => message.channelId === currentChannel.id));
-    useEffect(() => {
-      console.log('Use Effect from Chat');
-        axios.get(routes.dataPath(), { headers })
-            .then((response) => {
-                const {  currentChannelId, channels, messages } = response.data;
-                dispatch(updateCurrentChannelId(currentChannelId));
-                dispatch(initChannels(channels));
-                dispatch(initMessages(messages));
-            })
-            .catch((e) => {
-                console.log('error: ', e);
-            });
-    }, []);
-    // TODO: отключить правило на набор зависимостей
-    const { initChannels, updateCurrentChannelId } = channelsActions;
-    const { initMessages } = messagesActions;
+  const auth = useAuth();
+  const socketAPI = useSocketAPI();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { username } = auth.userData;
+  const headers = auth.getAuthHeader();
+  const currentChannel = useSelector((state) => state.channels.entities
+    .find((channel) => channel.id === state.channels.currentChannelId));
+  const currMessages = useSelector((state) => state.messages.entities
+    .filter((message) => message.channelId === currentChannel.id));
+  const { initChannels, updateCurrentChannelId } = channelsActions;
+  const { initMessages } = messagesActions;
+  useEffect(() => {
+    console.log('Use Effect from Chat');
+    axios.get(routes.dataPath(), { headers })
+      .then((response) => {
+        const { currentChannelId, channels, messages } = response.data;
+        dispatch(updateCurrentChannelId(currentChannelId));
+        dispatch(initChannels(channels));
+        dispatch(initMessages(messages));
+      })
+      .catch((e) => {
+        console.log('error: ', e);
+      });
+  }, []);
 
-    const initialValues = {
-        body: ""
-    };
+  const initialValues = {
+    body: '',
+  };
 
-    return (
-      <div className="d-flex justify-content-center align-items-center" style = {{height:"100vh", width:"80vw"}}>
-        <Container fluid style={{ height:'90%', width: '80%' }}>
+  return (
+      <div className="d-flex justify-content-center align-items-center" style = {{ height: '100vh', width: '80vw' }}>
+        <Container fluid style={{ height: '90%', width: '80%' }}>
             <div className="row h-100 d-flex bg-white flex-md-row">
                 <ChannelList/>
                 <div className="col-4 col-md-4 d-flex flex-column h-100 flex-grow-1">
@@ -58,11 +57,12 @@ const Chat = () => {
                             </b>
                         </p>
                         <span className="text-muted">
-          {`${t('channelList.messages')}: ${messages.length}`}
+          {`${t('channelList.messages')}: ${currMessages.length}`}
         </span>
                     </div>
                     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-                        {messages.map(({id, username, body}) => (
+                      {/* eslint-disable-next-line no-shadow */}
+                        {currMessages.map(({ id, username, body }) => (
                             <div key={id}>
                                 <b>{username}</b>
                                 {': '}
@@ -74,9 +74,10 @@ const Chat = () => {
                         <Formik
                             initialValues={initialValues}
                             onSubmit={(values, { resetForm }) => {
-                                console.log('test string');
-                                socketAPI.createMessage({body: filter.clean(values.body), channelId: currentChannel.id, username});
-                                resetForm();
+                              console.log('test string');
+                              // eslint-disable-next-line max-len
+                              socketAPI.createMessage({ body: filter.clean(values.body), channelId: currentChannel.id, username });
+                              resetForm();
                             }}
                         >{(formik) => (
                             <Form onSubmit={formik.handleSubmit} className="py-1 border rounded-2">
@@ -113,6 +114,6 @@ const Chat = () => {
             <DispatchModal/>
         </Container>
       </div>
-    );
-}
-export default  Chat;
+  );
+};
+export default Chat;
