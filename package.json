@@ -12,10 +12,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "start-server": "npx start-server -s /build"
+    "start-server": "npx start-server -s ./build"
   },
   "dependencies": {
     "@babel/preset-react": "^7.22.5",
+    "@hexlet/chat-server": "^1.1.6",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

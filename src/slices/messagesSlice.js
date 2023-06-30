@@ -23,10 +23,6 @@ const messagesSlice = createSlice({
         id, body, channelId, username,
       };
     },
-    removeChannelMessages(state, action) {
-      const channelId = action.payload;
-      state.entities = state.entities.filter((message) => message.channelId !== channelId);
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(channelsActions.removeChannel, (state, action) => {
