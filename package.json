@@ -9,10 +9,10 @@
     "os": false
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start-front": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "start-server": "npx start-server -s ./build"
+    "start": "npx start-server -s ./build"
   },
   "dependencies": {
     "@babel/preset-react": "^7.22.5",
