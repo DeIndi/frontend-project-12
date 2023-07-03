@@ -57,15 +57,15 @@ const SignUp = () => {
                     <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
                         <Form>
                             <div className="form-group">
-                                <label htmlFor="username">{t('userInfo.username')}:</label>
+                                <label htmlFor="username">{t('userInfo.username')}</label>
                                 <Field placeholder={t('userInfo.username')} name="username" id="username" onChange={formik.handleChange} type="text" className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)} />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="password">{t('userInfo.password')}:</label>
+                                <label htmlFor="password">{t('userInfo.password')}</label>
                                 <Field name="password" id="password" onChange={formik.handleChange} type="password" placeholder={t('userInfo.password')} className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)} />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="confirmPassword">{t('userInfo.confirmPassword')}:</label>
+                                <label htmlFor="confirmPassword">{t('userInfo.confirmPassword')}</label>
                                 <Field name="passwordConfirmation" id="confirmPassword" onChange={formik.handleChange} placeholder={t('userInfo.confirmPassword')} type="password" className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)} />
                             </div>
                             <div className="text-center mt-3 mb-0">
