@@ -33,7 +33,7 @@ const localeRu = {
     },
     headerNavBar: {
       header: 'Hexlet Chat',
-      register: 'Зарегистрироваться',
+      register: 'Регистрация',
       login: 'Войти',
       logout: 'Выйти',
     },
@@ -41,7 +41,7 @@ const localeRu = {
       matchingProblem: 'Неверные имя пользователя или пароль',
     },
     signUp: {
-      register: 'Зарегистрироваться',
+      register: 'Регистрация',
       close: 'Закрыть',
     },
     errors: {
