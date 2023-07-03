@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,8 @@ import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes';
 
 const SignUp = () => {
+  const { t } = useTranslation();
+
   const schema = yup.object({
     username: yup.string().length(6),
     password: yup.string().required('Password is required'),
@@ -54,19 +57,19 @@ const SignUp = () => {
                     <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
                         <Form>
                             <div className="form-group">
-                                <label htmlFor="username">Username:</label>
-                                <Field name="username" onChange={formik.handleChange} type="text" className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)} />
+                                <label htmlFor="username">{t('userInfo.username')}:</label>
+                                <Field placeholder={t('userInfo.username')} name="username" id="username" onChange={formik.handleChange} type="text" className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)} />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="password">Password:</label>
-                                <Field name="password" onChange={formik.handleChange} type="password" className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)} />
+                                <label htmlFor="password">{t('userInfo.password')}:</label>
+                                <Field name="password" id="password" onChange={formik.handleChange} type="password" placeholder={t('userInfo.password')} className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)} />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="passwordConfirmation">Confirm Password:</label>
-                                <Field name="passwordConfirmation" onChange={formik.handleChange} type="password" className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)} />
+                                <label htmlFor="confirmPassword">{t('userInfo.confirmPassword')}:</label>
+                                <Field name="passwordConfirmation" id="confirmPassword" onChange={formik.handleChange} placeholder={t('userInfo.confirmPassword')} type="password" className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)} />
                             </div>
                             <div className="text-center mt-3 mb-0">
-                                <button type="submit" className="btn btn-primary">Отправить</button>
+                                <button type="submit" className="btn btn-primary">{t('signUp.register')}</button>
                             </div>
                         </Form>
                     </div>
