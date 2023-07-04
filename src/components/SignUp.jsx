@@ -62,7 +62,7 @@ const SignUp = () => {
                           onChange={formik.handleChange} type="text"
                           className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)}/>
             <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t(formik.errors.username)}
+              {t('formik.errors.username')}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="form-group">
@@ -73,7 +73,7 @@ const SignUp = () => {
                           className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)}
             />
             <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t(formik.errors.password)}
+              {t('formik.errors.password')}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="form-group">
@@ -83,7 +83,7 @@ const SignUp = () => {
                           type="password"
                           className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)}/>
             <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t(formik.errors.passwordConfirmation)}
+              {t('formik.errors.passwordConfirmation')}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="text-center mt-3 mb-0">
