@@ -1,10 +1,11 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
+import Form from 'react-bootstrap/Form';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes';
 
@@ -22,60 +23,75 @@ const SignUp = () => {
       },
     ),
   });
-
   const navigate = useNavigate();
   const auth = useAuth();
-  const handleSubmit = async (values, formik) => {
-    console.log('values: ', values);
-    console.log('formik.values:', formik.values);
-    console.log('formik.resetForm:', formik.resetForm);
-    console.log('formik.validateForm:', formik.validateForm);
-    formik.validateForm().then((errors) => {
-      if (Object.keys(errors).length !== 0) {
-        console.log('Validation errors:', errors);
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+      passwordConfirmation: '',
+    },
+    onSubmit: async (values) => {
+      formik.validateForm().then((errors) => {
+        if (Object.keys(errors).length !== 0) {
+          console.log('Validation errors:', errors);
+        }
+      });
+      try {
+        const response = await axios.post(routes.signupPath(), values);
+        console.log('response after registration: ', response.data);
+        const userData = response.data;
+        auth.logIn(userData);
+        navigate('/');
+      } catch (e) {
+        console.log('error: ', e);
       }
-    });
-    try {
-      const response = await axios.post(routes.signupPath(), values);
-      console.log('response after registration: ', response.data);
-      const userData = response.data;
-      auth.logIn(userData);
-      navigate('/');
-    } catch (e) {
-      console.log('error: ', e);
-    }
-  };
-  return (
-        <div className="App">
-            <Formik
+    },
+    validationSchema: schema,
+  });
 
-                initialValues={{ username: '', password: '', passwordConfirmation: '' }}
-                onSubmit={(values, formik) => handleSubmit(values, formik)}
-                validationSchema={schema}
-            >
-                {(formik) => (
-                    <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
-                        <Form>
-                            <div className="form-group">
-                                <label htmlFor="username">{t('userInfo.username')}</label>
-                                <Field placeholder={t('userInfo.username')} name="username" id="username" onChange={formik.handleChange} type="text" className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">{t('userInfo.password')}</label>
-                                <Field name="password" id="password" onChange={formik.handleChange} type="password" placeholder={t('userInfo.password')} className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)} />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="confirmPassword">{t('userInfo.confirmPassword')}</label>
-                                <Field name="passwordConfirmation" id="confirmPassword" onChange={formik.handleChange} placeholder={t('userInfo.confirmPassword')} type="password" className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)} />
-                            </div>
-                            <div className="text-center mt-3 mb-0">
-                                <button type="submit" className="btn btn-primary">{t('signUp.register')}</button>
-                            </div>
-                        </Form>
-                    </div>
-                )}
-            </Formik>
-        </div>
+  console.log('formik: ', formik);
+  return (
+    <div className="App">
+      <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Label htmlFor="username">{t('userInfo.username')}</Form.Label>
+            <Form.Control placeholder={t('signUp.usernameConstraints')}
+                          name="username" id="username"
+                          onChange={formik.handleChange} type="text"
+                          className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)}/>
+            <Form.Control.Feedback type="invalid" tooltip placement="right">
+              {t(formik.errors.username)}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="form-group">
+            <Form.Label htmlFor="password">{t('userInfo.password')}</Form.Label>
+            <Form.Control name="password" id="password" onChange={formik.handleChange}
+                          type="password"
+                          placeholder={t('signUp.passMin')}
+                          className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)}
+            />
+            <Form.Control.Feedback type="invalid" tooltip placement="right">
+              {t(formik.errors.password)}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="form-group">
+            <Form.Label htmlFor="confirmPassword">{t('userInfo.confirmPassword')}</Form.Label>
+            <Form.Control name="passwordConfirmation" id="confirmPassword" onChange={formik.handleChange}
+                          placeholder={t('userInfo.confirmPassword')}
+                          type="password"
+                          className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)}/>
+            <Form.Control.Feedback type="invalid" tooltip placement="right">
+              {t(formik.errors.passwordConfirmation)}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="text-center mt-3 mb-0">
+            <button type="submit" className="btn btn-primary">{t('signUp.register')}</button>
+          </Form.Group>
+        </Form>
+      </div>
+    </div>
   );
 };
 

@@ -43,6 +43,8 @@ const localeRu = {
     },
     signUp: {
       register: 'Зарегистрироваться',
+      usernameConstraints: 'От 3 до 20 символов',
+      passMin: 'Не менее 6 символов',
       close: 'Закрыть',
     },
     errors: {
