@@ -11,9 +11,9 @@ import routes from '../routes';
 
 const SignUp = () => {
   const { t } = useTranslation();
-
   const schema = yup.object({
-    username: yup.string().length(6),
+    username: yup.string().min(3, t('signUp.usernameConstraints'))
+      .max(20, t('signUp.usernameConstraints')),
     password: yup.string().required('Password is required'),
     passwordConfirmation: yup.string().test(
       'passwords-match',
@@ -55,33 +55,49 @@ const SignUp = () => {
     <div className="App">
       <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Group className="form-floating mb-3">
             <Form.Label htmlFor="username">{t('userInfo.username')}</Form.Label>
-            <Form.Control placeholder={t('signUp.usernameConstraints')}
-                          name="username" id="username"
-                          onChange={formik.handleChange} type="text"
-                          className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)}/>
+            <Form.Control
+              placeholder={t('userInfo.username')}
+              name="username"
+              id="username"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.username ?? ''}
+              type="text"
+              required
+              className={classNames(formik.errors.username ? 'is-invalid' : null)}/>
             <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t('formik.errors.username')}
+              {formik.errors.username}
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group className="form-group">
+          <Form.Group className="form-floating mb-3">
             <Form.Label htmlFor="password">{t('userInfo.password')}</Form.Label>
-            <Form.Control name="password" id="password" onChange={formik.handleChange}
-                          type="password"
-                          placeholder={t('signUp.passMin')}
-                          className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)}
+            <Form.Control
+              name="password"
+              id="password"
+              type="password"
+              placeholder={t('signUp.passMin')}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              className={classNames(formik.errors.password ? 'is-invalid' : null)}
             />
             <Form.Control.Feedback type="invalid" tooltip placement="right">
               {t('formik.errors.password')}
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group className="form-group">
+          <Form.Group className="form-floating mb-4">
             <Form.Label htmlFor="confirmPassword">{t('userInfo.confirmPassword')}</Form.Label>
-            <Form.Control name="passwordConfirmation" id="confirmPassword" onChange={formik.handleChange}
-                          placeholder={t('userInfo.confirmPassword')}
-                          type="password"
-                          className={classNames('form-control', formik.errors.passwordConfirmation ? 'is-invalid' : null)}/>
+            <Form.Control
+              name="passwordConfirmation"
+              id="confirmPassword"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.passwordConfirmation}
+              placeholder={t('userInfo.confirmPassword')}
+              type="password"
+              className={classNames(formik.errors.passwordConfirmation ? 'is-invalid' : null)}/>
             <Form.Control.Feedback type="invalid" tooltip placement="right">
               {t('formik.errors.passwordConfirmation')}
             </Form.Control.Feedback>
