@@ -45,6 +45,8 @@ const localeRu = {
       register: 'Зарегистрироваться',
       usernameConstraints: 'От 3 до 20 символов',
       passMin: 'Не менее 6 символов',
+      passMatchUp: 'Пароли должны совпадать',
+      requiredField: 'Обязательное поле',
       close: 'Закрыть',
     },
     errors: {

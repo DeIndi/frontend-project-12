@@ -11,13 +11,20 @@ import routes from '../routes';
 
 const SignUp = () => {
   const { t } = useTranslation();
+  // TODO: схему определить вне компонента
   const schema = yup.object({
-    username: yup.string().min(3, t('signUp.usernameConstraints'))
-      .max(20, t('signUp.usernameConstraints')),
-    password: yup.string().required('Password is required'),
+    username: yup
+      .string()
+      .min(3, t('signUp.usernameConstraints'))
+      .max(20, t('signUp.usernameConstraints'))
+      .required(t('signUp.requiredField')),
+    password: yup
+      .string()
+      .min(6, t('signUp.passMin'))
+      .required(t('signUp.requiredField')),
     passwordConfirmation: yup.string().test(
       'passwords-match',
-      'Passwords must match',
+      t('signUp.passMatchUp'),
       function (value) {
         return value === this.parent.password;
       },
@@ -49,7 +56,7 @@ const SignUp = () => {
     },
     validationSchema: schema,
   });
-
+  // TODO: в formik писать коды ошибок
   console.log('formik: ', formik);
   return (
     <div className="App">
@@ -77,14 +84,14 @@ const SignUp = () => {
               name="password"
               id="password"
               type="password"
-              placeholder={t('signUp.passMin')}
+              placeholder={t('userInfo.password')}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
               className={classNames(formik.errors.password ? 'is-invalid' : null)}
             />
             <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t('formik.errors.password')}
+              {formik.errors.password}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="form-floating mb-4">
@@ -99,7 +106,7 @@ const SignUp = () => {
               type="password"
               className={classNames(formik.errors.passwordConfirmation ? 'is-invalid' : null)}/>
             <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t('formik.errors.passwordConfirmation')}
+              {formik.errors.passwordConfirmation}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="text-center mt-3 mb-0">
