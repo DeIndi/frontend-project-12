@@ -43,7 +43,7 @@ const localeRu = {
       logout: 'Выйти',
     },
     login: {
-      loginMatchUp: 'Неверные имя пользователя или пароль',
+      authFailed: 'Неверные имя пользователя или пароль',
       yourNickname: 'Ваш ник',
     },
     signUp: {
