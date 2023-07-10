@@ -10,15 +10,23 @@ import { useAuth } from '../hooks';
 import routes from '../routes';
 
 const Login = () => {
-  const schema = yup.string().length(8);
+  let isValid = true;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const auth = useAuth();
+  const schema = yup
+    .string()
+    .length(8)
+    .test(
+      'login-match',
+      t('login.loginMatchUp'),
+      () => isValid,
+    );
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
-      passwordConfirmation: '',
     },
     onSubmit: async (values) => {
       formik.validateForm().then((errors) => {
@@ -33,12 +41,15 @@ const Login = () => {
             auth.logIn(userData);
             navigate('/');
             navigate(0);
+            isValid = true;
           })
           .catch((e) => {
             console.log('error: ', e);
+            isValid = false;
           });
       } catch (e) {
         console.error(e);
+        isValid = false;
       }
     },
     validationSchema: schema,
@@ -46,16 +57,31 @@ const Login = () => {
   return (
         <div className="App">
           <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
-            <Form>
+            <Form onSubmit={formik.handleSubmit}>
               <Form.Group className="form-floating mb-3">
-                <Form.Label htmlFor="username">{t('userInfo.username')}:</Form.Label>
-                <Form.Control name="username" onChange={formik.handleChange} type="text" className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)} />
+                <Form.Label htmlFor="username">{t('login.yourNickname')}</Form.Label>
+                <Form.Control
+                  name="username"
+                  value={formik.values.username}
+                  onChange={formik.handleChange}
+                  type="text" className={classNames('form-control', formik.errors.username ? 'is-invalid' : null)}
+                  id="username"
+                />
               </Form.Group>
-              <Form.Group className="form-group">
-                <Form.Label htmlFor="password">{t('userInfo.password')}:</Form.Label>
-                <Form.Control name="password" onChange={formik.handleChange} type="password" className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)} />
+              <Form.Group className="form-floating mb-3">
+                <Form.Label htmlFor="password">{t('userInfo.password')}</Form.Label>
+                <Form.Control
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  type="password"
+                  className={classNames('form-control', formik.errors.password ? 'is-invalid' : null)}
+                  id="password"
+                />
               </Form.Group>
-                <Button type="submit" className="btn btn-primary">{t('modal.send')}</Button>
+              <Form.Group className="text-center mt-3 mb-0">
+                <Button type="submit" className="btn btn-primary">{t('userControls.login')}</Button>
+              </Form.Group>
             </Form>
           </div>
         </div>

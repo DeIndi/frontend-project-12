@@ -50,6 +50,7 @@ const SignUp = () => {
         const userData = response.data;
         auth.logIn(userData);
         navigate('/');
+        navigate(0);
       } catch (e) {
         console.log('error: ', e);
       }

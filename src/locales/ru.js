@@ -32,6 +32,10 @@ const localeRu = {
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
     },
+    userControls: {
+      login: 'Войти',
+      logout: 'Выйти',
+    },
     headerNavBar: {
       header: 'Hexlet Chat',
       register: 'Регистрация',
@@ -39,7 +43,8 @@ const localeRu = {
       logout: 'Выйти',
     },
     login: {
-      matchingProblem: 'Неверные имя пользователя или пароль',
+      loginMatchUp: 'Неверные имя пользователя или пароль',
+      yourNickname: 'Ваш ник',
     },
     signUp: {
       register: 'Зарегистрироваться',
