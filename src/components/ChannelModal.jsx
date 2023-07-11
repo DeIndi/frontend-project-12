@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import filter from 'leo-profanity';
@@ -9,10 +10,21 @@ import { useSocketAPI } from '../hooks';
 import { actions as modalsActions } from '../slices/modalsSlice';
 import 'react-toastify/dist/ReactToastify.css';
 
+const schema = (channels) => yup.object({
+  name: yup
+    .string()
+    .min(3, 'signUp.usernameConstraints')
+    .max(20, 'signUp.usernameConstraints')
+    .required('signUp.requiredField')
+    .notOneOf(channels, 'ChannelModal.channelNotUnique'),
+});
+
 const AddChannelModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const socketAPI = useSocketAPI();
+  const channels = useSelector((state) => state.channels.entities);
+  const [addFailed, setAddFailed] = useState(false);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };
@@ -20,24 +32,33 @@ const AddChannelModal = () => {
     initialValues: {
       name: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      try {
+        await formik.validateForm();
+      } catch (errors) {
+        setAddFailed(true);
+        return;
+      }
       try {
         console.log('Channel added');
         socketAPI.createChannel({ name: filter.clean(values.name) });
         toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
         formik.setSubmitting(false);
+        setAddFailed(false);
       } catch {
         console.log('Channel adding error');
+        setAddFailed(true);
         toast.error(t('channelModal.channelAddFail'));
       }
     },
+    validationSchema: schema(channels),
   });
   return (
         <>
             <Modal show={true} onHide={onClose}>
             <Modal.Header>
-                <Modal.Title>Добавить канал</Modal.Title>
+                <Modal.Title>{t('channelModal.add')}</Modal.Title>
                 <Button
                     variant="close"
                     type="button"
@@ -51,13 +72,14 @@ const AddChannelModal = () => {
                     <Form.Group>
                         <Form.Control
                             className="mb-2"
+                            isInvalid={addFailed}
                             disabled={ formik.isSubmitting }
                             onChange={ formik.handleChange }
                             autoFocus={true}
                             name="name"
                             id="name"
                         />
-                        <label className="visually-hidden" htmlFor="name">{ 'Название канала' }</label>
+                        <label className="visually-hidden" htmlFor="name">{t('channelModal.channelName')}</label>
                         <div className="d-flex justify-content-end">
                             <Button
                                 className="me-2"
@@ -75,6 +97,9 @@ const AddChannelModal = () => {
                                 {t('modal.send')}
                             </Button>
                         </div>
+                      <Form.Control.Feedback type="invalid" tooltip placement="right">
+                        {t(formik.errors.name)}
+                      </Form.Control.Feedback>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -88,6 +113,7 @@ const RenameChannelModal = ({ modalData }) => {
   const dispatch = useDispatch();
   const socketAPI = useSocketAPI();
   const { t } = useTranslation();
+  const [renameFailed, setRenameFailed] = useState(false);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };
@@ -95,16 +121,24 @@ const RenameChannelModal = ({ modalData }) => {
     initialValues: {
       name: '',
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      try {
+        await formik.validateForm();
+      } catch (errors) {
+        setRenameFailed(true);
+        return;
+      }
       try {
         console.log('Channel renamed');
         socketAPI.renameChannel({ id, name: filter.clean(values.name) });
         toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
         formik.setSubmitting(false);
         dispatch(modalsActions.closeModal());
+        setRenameFailed(false);
       } catch (error) {
         console.log('Channel renaming error');
         toast.error(`${t('channelModal.channelRenameFail')}, ${filter.clean(values.name)}`);
+        setRenameFailed(true);
       }
     },
   });
@@ -126,12 +160,13 @@ const RenameChannelModal = ({ modalData }) => {
                     <Form.Group>
                         <Form.Control
                             className="mb-2"
-                            disabled={ formik.isSubmitting }
-                            onChange={ formik.handleChange }
+                            isInvalid={renameFailed}
+                            disabled={formik.isSubmitting}
+                            onChange={formik.handleChange}
                             name="name"
                             id="name"
                         />
-                        <label className="visually-hidden" htmlFor="name">{ 'Название канала' }</label>
+                        <label className="visually-hidden" htmlFor="name">{t('channelModal.channelName')}</label>
                         <div className="d-flex justify-content-end">
                             <Button
                                 className="me-2"
@@ -149,6 +184,9 @@ const RenameChannelModal = ({ modalData }) => {
                                 {t('modal.send')}
                             </Button>
                         </div>
+                      <Form.Control.Feedback type="invalid" tooltip placement="right">
+                        {t(formik.errors.name)}
+                      </Form.Control.Feedback>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -169,8 +207,7 @@ const RemoveChannelModal = ({ modalData }) => {
     initialValues: {
       name: '',
     },
-    onSubmit: () => {
-      console.log('channel: ', channel);
+    onSubmit: async () => {
       if (channel.removable) {
         try {
           socketAPI.removeChannel(id);
@@ -187,7 +224,7 @@ const RemoveChannelModal = ({ modalData }) => {
         <>
             <Modal show={true} onHide={onClose}>
                 <Modal.Header>
-                    <Modal.Title>{t('channelModal.rename')}</Modal.Title>
+                    <Modal.Title>{t('channelModal.remove')}</Modal.Title>
                     <Button
                         variant="close"
                         type="button"

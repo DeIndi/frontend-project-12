@@ -23,7 +23,6 @@ const Login = () => {
       setAuthFailed(false);
       try {
         const errors = await formik.validateForm();
-        console.log('errors: ', errors);
         if (Object.keys(errors).length !== 0) {
           console.log('Validation errors:', errors);
         }
