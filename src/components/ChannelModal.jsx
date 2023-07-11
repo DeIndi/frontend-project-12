@@ -171,6 +171,7 @@ const RenameChannelModal = ({ modalData }) => {
                             isInvalid={renameFailed}
                             disabled={formik.isSubmitting}
                             onChange={formik.handleChange}
+                            autoFocus={true}
                             name="name"
                             id="name"
                         />

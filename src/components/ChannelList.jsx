@@ -9,6 +9,7 @@ import { actions as modalsActions } from '../slices/modalsSlice';
 export default function ChannelList() {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channels.entities);
+  console.log('channels: ', channels);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const dispatch = useDispatch();
   const onChangeChannel = (e, channelId) => {
@@ -54,14 +55,22 @@ export default function ChannelList() {
                                   onChangeChannel(e, channel.id);
                                 }}
                                 type="button"
-                                className={`vw-80 rounded-0 text-start text-truncate btn ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'} flex-grow-1`}>
+                                className={`vw-80 rounded-0 text-start text-truncate btn ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'} flex-grow-1`}
+                            >
                                 <span className="me-1">#</span>
                                 {`${channel.name}`}
                             </Button>
-                            <Dropdown.Toggle split className={`flex-grow-0 overflow-visible ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}>
-                                <span className="visually-hidden btn-secondary">{t('channels.menu')}</span>
+                            <Dropdown.Toggle
+                              split
+                              style={{ display: channel.removable === false ? 'none' : 'block' }}
+                              className={`flex-grow-0 overflow-visible ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}
+                            >
+                                <span className="visually-hidden btn-secondary">
+                                  {t('channels.menu')}
+                                </span>
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className={ `overflow-visible ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}` }>
+                            <Dropdown.Menu
+                              className={ `overflow-visible ${currentChannelId === channel.id ? 'btn-secondary ' : 'btn-light '}` }>
                                 <Dropdown.Item
                                     onClick={(e) => {
                                       onRenameChannel(e, channel.id, channel.name);
