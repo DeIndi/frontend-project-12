@@ -53,6 +53,7 @@ const AddChannelModal = () => {
                             className="mb-2"
                             disabled={ formik.isSubmitting }
                             onChange={ formik.handleChange }
+                            autoFocus={true}
                             name="name"
                             id="name"
                         />
