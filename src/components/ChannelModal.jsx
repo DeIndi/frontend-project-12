@@ -23,7 +23,8 @@ const AddChannelModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const socketAPI = useSocketAPI();
-  const channels = useSelector((state) => state.channels.entities);
+  const channels = useSelector((state) => state.channels.entities.map((channel) => channel.name));
+  console.log('channels: ', channels);
   const [addFailed, setAddFailed] = useState(false);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
@@ -119,6 +120,7 @@ const RenameChannelModal = ({ modalData }) => {
   const socketAPI = useSocketAPI();
   const { t } = useTranslation();
   const [renameFailed, setRenameFailed] = useState(false);
+  const channels = useSelector((state) => state.channels.entities.map((channel) => channel.name));
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };
@@ -146,6 +148,7 @@ const RenameChannelModal = ({ modalData }) => {
         setRenameFailed(true);
       }
     },
+    validationSchema: schema(channels),
   });
   return (
         <>
