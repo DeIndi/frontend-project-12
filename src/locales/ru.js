@@ -5,6 +5,8 @@ const localeRu = {
     changeLang: 'Сменить язык',
     channelList: {
       channels: 'Каналы',
+      remove: 'Удалить',
+      rename: 'Переименовать',
       messages: 'Сообщения',
       newMessage: 'Новое сообщение',
       inputMessage: 'Введите сообщение...',

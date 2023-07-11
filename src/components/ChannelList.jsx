@@ -76,14 +76,14 @@ export default function ChannelList() {
                                       onRenameChannel(e, channel.id, channel.name);
                                     }}
                                     >
-                                    {t('channelModal.rename')}
+                                    {t('channelList.rename')}
                                 </Dropdown.Item>
                                 <Dropdown.Item
                                     onClick={(e) => {
                                       onRemoveChannel(e, channel.id);
                                     }}
                                     >
-                                    {t('channelModal.remove')}
+                                    {t('channelList.remove')}
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
