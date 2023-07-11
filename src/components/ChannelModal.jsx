@@ -79,7 +79,12 @@ const AddChannelModal = () => {
                             name="name"
                             id="name"
                         />
-                        <label className="visually-hidden" htmlFor="name">{t('channelModal.channelName')}</label>
+                        <Form.Label
+                          className="visually-hidden"
+                          htmlFor="name"
+                        >
+                          {t('channelModal.channelName')}
+                        </Form.Label>
                         <div className="d-flex justify-content-end">
                             <Button
                                 className="me-2"
@@ -166,7 +171,7 @@ const RenameChannelModal = ({ modalData }) => {
                             name="name"
                             id="name"
                         />
-                        <label className="visually-hidden" htmlFor="name">{t('channelModal.channelName')}</label>
+                        <Form.Label className="visually-hidden" htmlFor="name">{t('channelModal.channelName')}</Form.Label>
                         <div className="d-flex justify-content-end">
                             <Button
                                 className="me-2"

@@ -17,7 +17,7 @@ const localeRu = {
       add: 'Добавить канал',
       remove: 'Удалить канал',
       rename: 'Переименовать канал',
-      channelName: 'Название канала',
+      channelName: 'Имя канала',
       channelAddSuccess: 'Канал создан',
       channelAddFail: 'Не удалось создать канал',
       channelRenameSuccess: 'Канал переименован',
