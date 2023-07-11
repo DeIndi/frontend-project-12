@@ -23,7 +23,7 @@ const schema = yup.object({
     'passwords-match',
     'signUp.passMatchUp',
     // TODO: подумать, как сделать через yup.ref
-    function (value) { return value === this.parent.password; },
+    (value, context) => value === context.parent.password,
   ),
 });
 

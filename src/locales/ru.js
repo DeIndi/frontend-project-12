@@ -10,7 +10,7 @@ const localeRu = {
       inputMessage: 'Введите сообщение...',
     },
     modal: {
-      close: 'Закрыть',
+      close: 'Отменить',
       send: 'Отправить',
     },
     channelModal: {
