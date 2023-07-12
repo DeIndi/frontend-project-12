@@ -65,7 +65,7 @@ export default function ChannelList() {
                               style={{ display: channel.removable === false ? 'none' : 'block' }}
                               className={`flex-grow-0 overflow-visible ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}
                             >
-                                <span className="visually-hidden btn-secondary">
+                                <span className="visually-hidden">
                                   {t('channels.menu')}
                                 </span>
                             </Dropdown.Toggle>
@@ -73,18 +73,18 @@ export default function ChannelList() {
                               className={ `overflow-visible ${currentChannelId === channel.id ? 'btn-secondary ' : 'btn-light '}` }>
                                 <Dropdown.Item
                                     onClick={(e) => {
-                                      onRenameChannel(e, channel.id, channel.name);
-                                    }}
-                                    >
-                                    {t('channelList.rename')}
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                    onClick={(e) => {
                                       onRemoveChannel(e, channel.id);
                                     }}
                                     >
                                     {t('channelList.remove')}
                                 </Dropdown.Item>
+                                <Dropdown.Item
+                                  onClick={(e) => {
+                                    onRenameChannel(e, channel.id, channel.name);
+                                  }}
+                                >
+                                {t('channelList.rename')}
+                              </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </li>)}
