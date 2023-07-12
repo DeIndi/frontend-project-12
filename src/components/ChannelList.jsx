@@ -63,14 +63,14 @@ export default function ChannelList() {
                             <Dropdown.Toggle
                               split
                               style={{ display: channel.removable === false ? 'none' : 'block' }}
-                              className={`flex-grow-0 overflow-visible ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}
+                              className={`flex-grow-0 ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}
                             >
                                 <span className="visually-hidden">
                                   {t('channels.menu')}
                                 </span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu
-                              className={ `overflow-visible ${currentChannelId === channel.id ? 'btn-secondary ' : 'btn-light '}` }>
+                              className={ `${currentChannelId === channel.id ? 'btn-secondary ' : 'btn-light '}` }>
                                 <Dropdown.Item
                                     onClick={(e) => {
                                       onRemoveChannel(e, channel.id);
