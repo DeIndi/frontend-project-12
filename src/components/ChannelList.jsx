@@ -48,7 +48,8 @@ export default function ChannelList() {
                 </button>
             </div>
             <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                {channels.map((channel) => <li key={channel.id} className="nav-item w-100">
+                {channels.map((channel) => (channel.removable
+                  ? <li key={channel.id} className="nav-item w-100">
                         <Dropdown as={ButtonGroup} className="d-flex">
                             <Button
                                 onClick={(e) => {
@@ -62,7 +63,6 @@ export default function ChannelList() {
                             </Button>
                             <Dropdown.Toggle
                               split
-                              style={{ display: channel.removable === false ? 'none' : 'block' }}
                               className={`flex-grow-0 ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}
                             >
                                 <span className="visually-hidden">
@@ -87,7 +87,19 @@ export default function ChannelList() {
                               </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                    </li>)}
+                    </li>
+                  : <li key={channel.id} className="nav-item w-100">
+                      <Button
+                        onClick={(e) => {
+                          onChangeChannel(e, channel.id);
+                        }}
+                        type="button"
+                        className={`vw-80 rounded-0 text-start text-truncate btn ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'} flex-grow-1`}
+                      >
+                        <span className="me-1">#</span>
+                        {`${channel.name}`}
+                      </Button>
+                  </li>))}
             </ul>
         </div>
   );
