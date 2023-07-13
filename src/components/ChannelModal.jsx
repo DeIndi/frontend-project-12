@@ -243,6 +243,7 @@ const RemoveChannelModal = ({ modalData }) => {
                     />
                 </Modal.Header>
                 <Modal.Body>
+                  <p className="lead">{t('modal.confirmation')}</p>
                     <Form onSubmit={formik.handleSubmit}>
                         <Form.Group>
                             <div className="d-flex justify-content-end">
@@ -259,7 +260,7 @@ const RemoveChannelModal = ({ modalData }) => {
                                     type="submit"
                                     disabled={formik.isSubmitting}
                                 >
-                                    {t('modal.send')}
+                                    {t('modal.remove')}
                                 </Button>
                             </div>
                         </Form.Group>

@@ -15,6 +15,8 @@ const localeRu = {
     modal: {
       close: 'Отменить',
       send: 'Отправить',
+      remove: 'Удалить',
+      confirmation: 'Уверены?',
     },
     channelModal: {
       add: 'Добавить канал',
