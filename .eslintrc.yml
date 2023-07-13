@@ -1,27 +1,44 @@
----
-
 env:
   browser: true
-  es2020: true
+  es2021: true
 
 extends:
-  - 'airbnb-base'
-  - 'eslint:recommended'
-  - 'plugin:react/recommended'
+  - airbnb-base
+  - eslint:recommended
+  - plugin:react/recommended
+
 parserOptions:
+  ecmaFeatures:
+    jsx: true
   ecmaVersion: latest
+  sourceType: module
+
+settings:
+  react:
+    version: detect
 
 rules:
-  import/extensions: 0
-  import/no-unresolved: 0
-  no-param-reassign: 0
-  no-console: 0
-  react/prop-types: 0
-  functional/no-conditional-statement: 0
-  functional/no-expression-statement: 0
-  functional/immutable-data: 0
-  functional/functional-parameters: 0
-  functional/no-try-statement: 0
-  functional/no-throw-statement: 0
-  linebreak-style: 0
-  import/no-extraneous-dependencies: [ error, { devDependencies: true } ]
+  import/extensions: off
+  import/no-unresolved: off
+  no-param-reassign: off
+  no-console: off
+  react/prop-types: off
+  functional/no-conditional-statement: off
+  functional/no-expression-statement: off
+  functional/immutable-data: off
+  functional/functional-parameters: off
+  functional/no-try-statement: off
+  functional/no-throw-statement: off
+  no-underscore-dangle:
+    - 2
+    - allow:
+        - __filename
+        - __dirname
+  react/function-component-definition:
+    - 2
+    - namedComponents: arrow-function
+  linebreak-style: off
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies: true
+  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
