@@ -256,7 +256,7 @@ const RemoveChannelModal = ({ modalData }) => {
                                     {t('modal.close')}
                                 </Button>
                                 <Button
-                                    variant="danger"
+                                    variant="primary"
                                     type="submit"
                                     disabled={formik.isSubmitting}
                                 >
