@@ -66,7 +66,7 @@ export default function ChannelList() {
                               className={`flex-grow-0 ${currentChannelId === channel.id ? 'btn-secondary' : 'btn-light'}`}
                             >
                                 <span className="visually-hidden">
-                                  {t('channels.menu')}
+                                  {t('channelList.controls')}
                                 </span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu

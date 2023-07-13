@@ -4,6 +4,7 @@ const localeRu = {
     russian: 'Русский',
     changeLang: 'Сменить язык',
     channelList: {
+      controls: 'Управление каналом',
       channels: 'Каналы',
       remove: 'Удалить',
       rename: 'Переименовать',

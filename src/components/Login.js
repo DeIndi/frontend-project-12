@@ -11,8 +11,8 @@ const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const auth = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
-
+  const [isAuthFailed, setIsAuthFailed] = useState(false);
+  const [isGeneralError, setIsGeneralError] = useState(false);
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -20,12 +20,13 @@ const Login = () => {
     },
     onSubmit: async (values, formikHelpers) => {
       console.log('formikHelpers: ', formikHelpers);
-      setAuthFailed(false);
+      setIsGeneralError(false);
       try {
         const errors = await formik.validateForm();
         if (Object.keys(errors).length !== 0) {
           console.log('Validation errors:', errors);
         }
+        // TODO: переделать с исп. await
         axios.post(routes.loginPath(), values)
           .then((response) => {
             const userData = response.data;
@@ -35,13 +36,16 @@ const Login = () => {
           })
           .catch((e) => {
             console.log('error: ', e);
-            // TODO: рассмотреть разные коды axios, проверяем 401 код HTTP,
-            //  в остальных случаях - другая ошибка
-            setAuthFailed(true);
+            if (e.response.data.statusCode === 401) {
+              setIsAuthFailed(true);
+            } else {
+              // TODO: всплывающее сообщение для общего случая
+            }
           });
       } catch (e) {
         console.error(e);
-        setAuthFailed(false);
+        setIsGeneralError(false);
+        // TODO: всплывающее сообщение для общего случая
       }
     },
   });
@@ -52,7 +56,7 @@ const Login = () => {
               <Form.Group className="form-floating mb-3">
                 <Form.Control
                   name="username"
-                  isInvalid={authFailed}
+                  isInvalid={isAuthFailed || isGeneralError}
                   value={formik.values.username}
                   onChange={formik.handleChange}
                   type="text"
@@ -62,7 +66,7 @@ const Login = () => {
               </Form.Group>
               <Form.Group className="form-floating mb-3">
                 <Form.Control
-                  isInvalid={authFailed}
+                  isInvalid={isAuthFailed || isGeneralError}
                   name="password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
