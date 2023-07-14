@@ -15,6 +15,7 @@
     "start": "npx start-server -s ./build"
   },
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-react": "^7.22.5",
     "@hexlet/chat-server": "^1.1.6",
     "@reduxjs/toolkit": "^1.9.5",
