@@ -22,9 +22,15 @@ rules:
   import/no-unresolved: off
   react/jsx-tag-spacing:
     - error
-    - beforeSelfClosing: never
+    - beforeClosing: always
   no-param-reassign: off
   no-console: off
+  react/jsx-boolean-value:
+    - error
+    - always
+  react/jsx-curly-spacing:
+    - error
+    - { "when": "always", "children": true, "spacing": { "objectLiterals": "never" } }
   react/jsx-closing-bracket-location:
     - error
     - line-aligned

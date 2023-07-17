@@ -48,8 +48,8 @@ const SocketAPIProvider = ({ socket, children }) => {
       createMessage, createChannel, removeChannel, renameChannel,
     }}
     >
-      {children}
-    </SocketAPIContext.Provider>
+      { children }
+    </SocketAPIContext.Provider >
   );
 };
 

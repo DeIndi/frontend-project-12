@@ -44,40 +44,40 @@ const Login = () => {
     },
   });
   return (
-    <div className="App">
-      <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
-        <Form onSubmit={formik.handleSubmit}>
-          <Form.Group className="form-floating mb-3">
+    <div className="App" >
+      <div className="container d-flex justify-content-center align-items-center vh-100 mt-5" >
+        <Form onSubmit={ formik.handleSubmit } >
+          <Form.Group className="form-floating mb-3" >
             <Form.Control
               name="username"
-              isInvalid={isAuthFailed || isGeneralError}
-              value={formik.values.username}
-              onChange={formik.handleChange}
+              isInvalid={ isAuthFailed || isGeneralError }
+              value={ formik.values.username }
+              onChange={ formik.handleChange }
               type="text"
               id="username"
             />
-            <Form.Label htmlFor="username">{t('login.yourNickname')}</Form.Label>
-          </Form.Group>
-          <Form.Group className="form-floating mb-3">
+            <Form.Label htmlFor="username" >{ t('login.yourNickname') }</Form.Label >
+          </Form.Group >
+          <Form.Group className="form-floating mb-3" >
             <Form.Control
-              isInvalid={isAuthFailed || isGeneralError}
+              isInvalid={ isAuthFailed || isGeneralError }
               name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
+              value={ formik.values.password }
+              onChange={ formik.handleChange }
               type="password"
               id="password"
             />
-            <Form.Label htmlFor="password">{t('userInfo.password')}</Form.Label>
-            <Form.Control.Feedback type="invalid" tooltip placement="right">
-              {t('login.authFailed')}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="text-center mt-3 mb-0">
-            <Button type="submit" className="btn btn-primary">{t('userControls.login')}</Button>
-          </Form.Group>
-        </Form>
-      </div>
-    </div>
+            <Form.Label htmlFor="password" >{ t('userInfo.password') }</Form.Label >
+            <Form.Control.Feedback type="invalid" tooltip={ true } placement="right" >
+              { t('login.authFailed') }
+            </Form.Control.Feedback >
+          </Form.Group >
+          <Form.Group className="text-center mt-3 mb-0" >
+            <Button type="submit" className="btn btn-primary" >{ t('userControls.login') }</Button >
+          </Form.Group >
+        </Form >
+      </div >
+    </div >
   );
 };
 

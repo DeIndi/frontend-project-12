@@ -47,8 +47,8 @@ const AuthProvider = ({ children }) => {
       loggedIn, logIn, logOut, getAuthHeader, userData,
     }}
     >
-      {children}
-    </AuthContext.Provider>
+      { children }
+    </AuthContext.Provider >
   );
 };
 
@@ -56,7 +56,7 @@ const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }}/>
+    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
   );
 };
 
@@ -64,25 +64,25 @@ const router = createBrowserRouter([
   {
     path: '/',
     element:
-            <PrivateRoute>
-              <Chat/>
-            </PrivateRoute>,
-    errorElement: <ErrorPage/>,
+            <PrivateRoute >
+              <Chat />
+            </PrivateRoute >,
+    errorElement: <ErrorPage />,
   },
   {
     path: 'login',
-    element: <Login/>,
-    errorElement: <ErrorPage/>,
+    element: <Login />,
+    errorElement: <ErrorPage />,
   },
   {
     path: 'signup',
-    element: <SignUp/>,
-    errorElement: <ErrorPage/>,
+    element: <SignUp />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '*',
-    element: <ErrorPage/>,
-    errorElement: <ErrorPage/>,
+    element: <ErrorPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
@@ -100,22 +100,22 @@ const init = async () => {
     });
   console.log('i18 init: ', i18n);
   return (
-    <React.StrictMode>
-      <I18nextProvider i18n={i18n} >
-        <Provider store={store}>
-          <AuthProvider>
-            <SocketAPIProvider socket={clientSocket}>
-              <HeaderNavbar/>
+    <React.StrictMode >
+      <I18nextProvider i18n={ i18n } >
+        <Provider store={ store } >
+          <AuthProvider >
+            <SocketAPIProvider socket={ clientSocket } >
+              <HeaderNavbar />
               <RouterProvider
-                router={router}
-                fallbackElement={<ErrorPage/>}
+                router={ router }
+                fallbackElement={ <ErrorPage /> }
               />
-              <ToastContainer/>
-            </SocketAPIProvider>
-          </AuthProvider>
-        </Provider>
-      </I18nextProvider>
-    </React.StrictMode>
+              <ToastContainer />
+            </SocketAPIProvider >
+          </AuthProvider >
+        </Provider >
+      </I18nextProvider >
+    </React.StrictMode >
   );
 };
 

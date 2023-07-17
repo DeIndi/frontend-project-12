@@ -55,26 +55,26 @@ const AddChannelModal = () => {
   });
   return (
     <>
-      <Modal show={true} onHide={onClose}>
-        <Modal.Header>
-          <Modal.Title>{t('channelModal.add')}</Modal.Title>
+      <Modal show={ true } onHide={ onClose } >
+        <Modal.Header >
+          <Modal.Title >{ t('channelModal.add') }</Modal.Title >
           <Button
             variant="close"
             type="button"
-            onClick={onClose}
+            onClick={ onClose }
             aria-label="Close"
             data-bs-dismiss="modal"
           />
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={formik.handleSubmit}>
-            <Form.Group>
+        </Modal.Header >
+        <Modal.Body >
+          <Form onSubmit={ formik.handleSubmit } >
+            <Form.Group >
               <Form.Control
                 className="mb-2"
-                isInvalid={addFailed}
+                isInvalid={ addFailed }
                 disabled={ formik.isSubmitting }
                 onChange={ formik.handleChange }
-                autoFocus={true}
+                autoFocus={ true }
                 name="name"
                 id="name"
               />
@@ -82,32 +82,32 @@ const AddChannelModal = () => {
                 className="visually-hidden"
                 htmlFor="name"
               >
-                {t('channelModal.channelName')}
-              </Form.Label>
-              <div className="d-flex justify-content-end">
+                { t('channelModal.channelName') }
+              </Form.Label >
+              <div className="d-flex justify-content-end" >
                 <Button
                   className="me-2"
                   variant="secondary"
                   type="button"
-                  onClick={onClose}
+                  onClick={ onClose }
                 >
-                  {t('modal.close')}
-                </Button>
+                  { t('modal.close') }
+                </Button >
                 <Button
                   variant="primary"
                   type="submit"
-                  disabled={formik.isSubmitting}
+                  disabled={ formik.isSubmitting }
                 >
-                  {t('modal.send')}
-                </Button>
-              </div>
-              <Form.Control.Feedback type="invalid" tooltip placement="right">
-                {t(formik.errors.name)}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-      </Modal>
+                  { t('modal.send') }
+                </Button >
+              </div >
+              <Form.Control.Feedback type="invalid" tooltip={ true } placement="right" >
+                { t(formik.errors.name) }
+              </Form.Control.Feedback >
+            </Form.Group >
+          </Form >
+        </Modal.Body >
+      </Modal >
     </>
   );
 };
@@ -150,54 +150,54 @@ const RenameChannelModal = ({ modalData }) => {
   });
   return (
     <>
-      <Modal show={true} onHide={onClose}>
-        <Modal.Header>
-          <Modal.Title>{t('channelModal.rename')}</Modal.Title>
+      <Modal show={ true } onHide={ onClose } >
+        <Modal.Header >
+          <Modal.Title >{ t('channelModal.rename') }</Modal.Title >
           <Button
             variant="close"
             type="button"
-            onClick={onClose}
+            onClick={ onClose }
             aria-label="Close"
             data-bs-dismiss="modal"
           />
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={formik.handleSubmit}>
-            <Form.Group>
+        </Modal.Header >
+        <Modal.Body >
+          <Form onSubmit={ formik.handleSubmit } >
+            <Form.Group >
               <Form.Control
                 className="mb-2"
-                isInvalid={renameFailed}
-                disabled={formik.isSubmitting}
-                onChange={formik.handleChange}
-                autoFocus={true}
+                isInvalid={ renameFailed }
+                disabled={ formik.isSubmitting }
+                onChange={ formik.handleChange }
+                autoFocus={ true }
                 name="name"
                 id="name"
               />
-              <Form.Label className="visually-hidden" htmlFor="name">{t('channelModal.channelName')}</Form.Label>
-              <div className="d-flex justify-content-end">
+              <Form.Label className="visually-hidden" htmlFor="name" >{ t('channelModal.channelName') }</Form.Label >
+              <div className="d-flex justify-content-end" >
                 <Button
                   className="me-2"
                   variant="secondary"
                   type="button"
-                  onClick={onClose}
+                  onClick={ onClose }
                 >
-                  {t('modal.close')}
-                </Button>
+                  { t('modal.close') }
+                </Button >
                 <Button
                   variant="primary"
                   type="submit"
-                  disabled={formik.isSubmitting}
+                  disabled={ formik.isSubmitting }
                 >
-                  {t('modal.send')}
-                </Button>
-              </div>
-              <Form.Control.Feedback type="invalid" tooltip placement="right">
-                {t(formik.errors.name)}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-      </Modal>
+                  { t('modal.send') }
+                </Button >
+              </div >
+              <Form.Control.Feedback type="invalid" tooltip={ true } placement="right" >
+                { t(formik.errors.name) }
+              </Form.Control.Feedback >
+            </Form.Group >
+          </Form >
+        </Modal.Body >
+      </Modal >
     </>
   );
 };
@@ -229,42 +229,42 @@ const RemoveChannelModal = ({ modalData }) => {
   });
   return (
     <>
-      <Modal show={true} onHide={onClose}>
-        <Modal.Header>
-          <Modal.Title>{t('channelModal.remove')}</Modal.Title>
+      <Modal show={ true } onHide={ onClose } >
+        <Modal.Header >
+          <Modal.Title >{ t('channelModal.remove') }</Modal.Title >
           <Button
             variant="close"
             type="button"
-            onClick={onClose}
+            onClick={ onClose }
             aria-label="Close"
             data-bs-dismiss="modal"
           />
-        </Modal.Header>
-        <Modal.Body>
-          <p className="lead">{t('modal.confirmation')}</p>
-          <Form onSubmit={formik.handleSubmit}>
-            <Form.Group>
-              <div className="d-flex justify-content-end">
+        </Modal.Header >
+        <Modal.Body >
+          <p className="lead" >{ t('modal.confirmation') }</p >
+          <Form onSubmit={ formik.handleSubmit } >
+            <Form.Group >
+              <div className="d-flex justify-content-end" >
                 <Button
                   className="me-2"
                   variant="secondary"
                   type="button"
-                  onClick={onClose}
+                  onClick={ onClose }
                 >
-                  {t('modal.close')}
-                </Button>
+                  { t('modal.close') }
+                </Button >
                 <Button
                   variant="danger"
                   type="submit"
-                  disabled={formik.isSubmitting}
+                  disabled={ formik.isSubmitting }
                 >
-                  {t('modal.remove')}
-                </Button>
-              </div>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-      </Modal>
+                  { t('modal.remove') }
+                </Button >
+              </div >
+            </Form.Group >
+          </Form >
+        </Modal.Body >
+      </Modal >
     </>
   );
 };
@@ -280,6 +280,6 @@ const DispatchModal = () => {
 
   const ModalComponent = modalComponents[currentModal];
 
-  return ModalComponent ? <ModalComponent modalData={modalData}/> : null;
+  return ModalComponent ? <ModalComponent modalData={ modalData } /> : null;
 };
 export { DispatchModal, AddChannelModal, RenameChannelModal };
