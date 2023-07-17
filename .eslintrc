@@ -22,7 +22,7 @@ rules:
   import/no-unresolved: off
   react/jsx-tag-spacing:
     - error
-    - beforeSelfClosing: always
+    - beforeSelfClosing: never
   no-param-reassign: off
   no-console: off
   react/jsx-closing-bracket-location:
@@ -35,6 +35,10 @@ rules:
   functional/functional-parameters: off
   functional/no-try-statement: off
   functional/no-throw-statement: off
+  indent:
+    - error
+    - 4
+    - SwitchCase: 1
   no-underscore-dangle:
     - 2
     - allow:

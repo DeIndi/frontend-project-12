@@ -6,6 +6,6 @@ const useAuth = () => useContext(AuthContext);
 const useSocketAPI = () => useContext(SocketAPIContext);
 
 export {
-  useAuth,
-  useSocketAPI,
+    useAuth,
+    useSocketAPI,
 };
