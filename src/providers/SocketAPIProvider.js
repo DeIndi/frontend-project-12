@@ -46,7 +46,8 @@ const SocketAPIProvider = ({ socket, children }) => {
   return (
     <SocketAPIContext.Provider value={{
       createMessage, createChannel, removeChannel, renameChannel,
-    }}>
+    }}
+    >
       {children}
     </SocketAPIContext.Provider>
   );

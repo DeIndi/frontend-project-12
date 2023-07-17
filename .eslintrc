@@ -1,5 +1,3 @@
----
-
 env:
   browser: true
   es2021: true
@@ -24,6 +22,9 @@ rules:
   import/no-unresolved: off
   no-param-reassign: off
   no-console: off
+  react/jsx-closing-bracket-location:
+    - error
+    - line-aligned
   react/prop-types: off
   functional/no-conditional-statement: off
   functional/no-expression-statement: off
