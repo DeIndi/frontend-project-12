@@ -20,6 +20,9 @@ settings:
 rules:
   import/extensions: off
   import/no-unresolved: off
+  react/jsx-tag-spacing:
+    - error
+    - beforeSelfClosing: always
   no-param-reassign: off
   no-console: off
   react/jsx-closing-bracket-location:

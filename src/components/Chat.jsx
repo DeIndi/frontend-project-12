@@ -48,7 +48,7 @@ const Chat = () => {
       <div className="d-flex justify-content-center align-items-center" style = {{ height: '100vh', width: '80vw' }}>
         <Container fluid style={{ height: '90%', width: '80%' }}>
             <div className="row h-100 d-flex bg-white flex-md-row">
-                <ChannelList/>
+                <ChannelList />
                 <div className="col-4 col-md-4 d-flex flex-column h-100 flex-grow-1">
                     <div className="bg-light mb-4 p-3 shadow-sm small">
                         <p className="m-0">
@@ -111,7 +111,7 @@ const Chat = () => {
                     </div>
                 </div>
             </div>
-            <DispatchModal/>
+            <DispatchModal />
         </Container>
       </div>
   );

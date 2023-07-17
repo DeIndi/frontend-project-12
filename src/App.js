@@ -65,24 +65,24 @@ const router = createBrowserRouter([
     path: '/',
     element:
             <PrivateRoute>
-                <Chat/>
+                <Chat />
             </PrivateRoute>,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
   },
   {
     path: 'login',
-    element: <Login/>,
-    errorElement: <ErrorPage/>,
+    element: <Login />,
+    errorElement: <ErrorPage />,
   },
   {
     path: 'signup',
-    element: <SignUp/>,
-    errorElement: <ErrorPage/>,
+    element: <SignUp />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '*',
-    element: <ErrorPage/>,
-    errorElement: <ErrorPage/>,
+    element: <ErrorPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
@@ -105,7 +105,7 @@ const init = async () => {
         <Provider store={store}>
             <AuthProvider>
                 <SocketAPIProvider socket={clientSocket}>
-                    <HeaderNavbar/>
+                    <HeaderNavbar />
                     <RouterProvider
                         router={router}
                         fallbackElement={<ErrorPage />}
