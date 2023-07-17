@@ -19,12 +19,10 @@ const schema = yup.object({
     .string()
     .min(6, 'signUp.passMin')
     .required('signUp.requiredField'),
-  passwordConfirmation: yup.string().test(
-    'passwords-match',
-    'signUp.passMatchUp',
-    // TODO: подумать, как сделать через yup.ref
-    (value, context) => value === context.parent.password,
-  ),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password')], 'signUp.passMatchUp')
+    .required('signUp.requiredField'),
 });
 
 const SignUp = () => {

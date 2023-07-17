@@ -41,14 +41,12 @@ const AddChannelModal = () => {
         return;
       }
       try {
-        console.log('Channel added');
         socketAPI.createChannel({ name: filter.clean(values.name) });
         toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
         formik.setSubmitting(false);
         setAddFailed(false);
       } catch {
-        console.log('Channel adding error');
         setAddFailed(true);
         toast.error(t('channelModal.channelAddFail'));
       }

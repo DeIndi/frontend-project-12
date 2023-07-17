@@ -64,7 +64,7 @@ const localeRu = {
     errors: {
       errorAlreadyExists: 'Уже существует',
       errorEmptyInput: 'Не должно быть пустым',
-      errorNetwork: 'Ошибка сети',
+      errorNetwork: 'Ошибка соединения',
       errorGeneral: 'Непредвиденная ошибка',
     },
   },

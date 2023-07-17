@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -18,34 +19,27 @@ const Login = () => {
       username: '',
       password: '',
     },
-    onSubmit: async (values, formikHelpers) => {
-      console.log('formikHelpers: ', formikHelpers);
+    onSubmit: async (values) => {
       setIsGeneralError(false);
       try {
-        const errors = await formik.validateForm();
-        if (Object.keys(errors).length !== 0) {
-          console.log('Validation errors:', errors);
-        }
-        // TODO: переделать с исп. await
-        axios.post(routes.loginPath(), values)
-          .then((response) => {
-            const userData = response.data;
-            auth.logIn(userData);
-            navigate('/');
-            navigate(0);
-          })
-          .catch((e) => {
-            console.log('error: ', e);
-            if (e.response.data.statusCode === 401) {
-              setIsAuthFailed(true);
-            } else {
-              // TODO: всплывающее сообщение для общего случая
-            }
-          });
+        await formik.validateForm();
+        const response = await axios.post(routes.loginPath(), values);
+        const userData = response.data;
+        auth.logIn(userData);
+        navigate('/');
+        navigate(0);
+        setIsAuthFailed(false);
+        setIsGeneralError(false);
       } catch (e) {
         console.error(e);
-        setIsGeneralError(false);
-        // TODO: всплывающее сообщение для общего случая
+        if (e.code === 'ERR_NETWORK') {
+          toast.error(t('error.errorNetwork'));
+        }
+        if (e.response.data.statusCode === 401) {
+          setIsAuthFailed(true);
+          return;
+        }
+        setIsGeneralError(true);
       }
     },
   });

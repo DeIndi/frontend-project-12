@@ -9,7 +9,6 @@ import { actions as modalsActions } from '../slices/modalsSlice';
 const ChannelList = () => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channels.entities);
-  console.log('channels: ', channels);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const dispatch = useDispatch();
   const onChangeChannel = (e, channelId) => {

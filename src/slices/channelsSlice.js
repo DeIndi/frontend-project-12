@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialChannelsState = {
   ids: [], entities: [], currentChannelId: 0,
@@ -30,18 +30,10 @@ const channelsSlice = createSlice({
     },
     renameChannel(state, action) {
       const { id, name } = action.payload;
-      console.log('channel to rename (from actions):', id, name);
-      console.log('current state: ', current(state));
-      const channelToRename = state.entities.find((channel) => {
-        console.log('Comparing channel with id:', channel.id);
-        console.log('to id:', id);
-        return channel.id === id;
-      });
+      const channelToRename = state.entities.find((channel) => channel.id === id);
       if (channelToRename) {
         console.dir('channel to rename:', channelToRename);
         channelToRename.name = name;
-      } else {
-        console.log('Channel not found.');
       }
     },
     updateChannel(state, action) {
