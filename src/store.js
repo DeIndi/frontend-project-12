@@ -5,10 +5,10 @@ import messagesReducer from './slices/messagesSlice';
 import modalsReducer from './slices/modalsSlice';
 
 const rootReducer = combineReducers({
-    channels: channelsReducer,
-    users: usersReducer,
-    messages: messagesReducer,
-    modals: modalsReducer,
+  channels: channelsReducer,
+  users: usersReducer,
+  messages: messagesReducer,
+  modals: modalsReducer,
 });
 
 const store = createStore(rootReducer);

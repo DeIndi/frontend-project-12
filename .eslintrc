@@ -37,7 +37,7 @@ rules:
   functional/no-throw-statement: off
   indent:
     - error
-    - 4
+    - 2
     - SwitchCase: 1
   no-underscore-dangle:
     - 2

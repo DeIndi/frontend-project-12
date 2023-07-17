@@ -1,9 +1,9 @@
 import {
-    createBrowserRouter,
-    RouterProvider,
+  createBrowserRouter,
+  RouterProvider,
 
-    Navigate,
-    useLocation,
+  Navigate,
+  useLocation,
 } from 'react-router-dom';
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
@@ -25,98 +25,98 @@ import { useAuth } from './hooks';
 import SocketAPIProvider from './providers/SocketAPIProvider';
 
 const AuthProvider = ({ children }) => {
-    const localUserData = JSON.parse(localStorage.getItem('userData'));
-    const [userData, setUserData] = useState(localUserData ?? null);
-    const loggedIn = !!userData;
-    const getAuthHeader = () => {
-        if (userData?.token) {
-            return { Authorization: `Bearer ${userData.token}` };
-        }
-        return {};
-    };
-    const logIn = (usrData) => {
-        setUserData(usrData);
-        localStorage.setItem('userData', JSON.stringify(usrData));
-    };
-    const logOut = () => {
-        localStorage.removeItem('userData');
-        setUserData(null);
-    };
-    return (
-        <AuthContext.Provider value={{
-            loggedIn, logIn, logOut, getAuthHeader, userData,
-        }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+  const localUserData = JSON.parse(localStorage.getItem('userData'));
+  const [userData, setUserData] = useState(localUserData ?? null);
+  const loggedIn = !!userData;
+  const getAuthHeader = () => {
+    if (userData?.token) {
+      return { Authorization: `Bearer ${userData.token}` };
+    }
+    return {};
+  };
+  const logIn = (usrData) => {
+    setUserData(usrData);
+    localStorage.setItem('userData', JSON.stringify(usrData));
+  };
+  const logOut = () => {
+    localStorage.removeItem('userData');
+    setUserData(null);
+  };
+  return (
+    <AuthContext.Provider value={{
+      loggedIn, logIn, logOut, getAuthHeader, userData,
+    }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 const PrivateRoute = ({ children }) => {
-    const auth = useAuth();
-    const location = useLocation();
-    return (
-        auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }}/>
-    );
+  const auth = useAuth();
+  const location = useLocation();
+  return (
+    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }}/>
+  );
 };
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element:
+  {
+    path: '/',
+    element:
             <PrivateRoute>
-                <Chat/>
+              <Chat/>
             </PrivateRoute>,
-        errorElement: <ErrorPage/>,
-    },
-    {
-        path: 'login',
-        element: <Login/>,
-        errorElement: <ErrorPage/>,
-    },
-    {
-        path: 'signup',
-        element: <SignUp/>,
-        errorElement: <ErrorPage/>,
-    },
-    {
-        path: '*',
-        element: <ErrorPage/>,
-        errorElement: <ErrorPage/>,
-    },
+    errorElement: <ErrorPage/>,
+  },
+  {
+    path: 'login',
+    element: <Login/>,
+    errorElement: <ErrorPage/>,
+  },
+  {
+    path: 'signup',
+    element: <SignUp/>,
+    errorElement: <ErrorPage/>,
+  },
+  {
+    path: '*',
+    element: <ErrorPage/>,
+    errorElement: <ErrorPage/>,
+  },
 ]);
 
 const init = async () => {
-    const clientSocket = io(server);
-    const i18n = i18next.createInstance();
-    await i18n
-        .use(initReactI18next)
-        .init({
-            resources,
-            fallbackLng: 'ru',
-            interpolation: {
-                escapeValue: false,
-            },
-        });
-    console.log('i18 init: ', i18n);
-    return (
-        <React.StrictMode>
-            <I18nextProvider i18n={i18n} >
-                <Provider store={store}>
-                    <AuthProvider>
-                        <SocketAPIProvider socket={clientSocket}>
-                            <HeaderNavbar/>
-                            <RouterProvider
-                                router={router}
-                                fallbackElement={<ErrorPage/>}
-                            />
-                            <ToastContainer/>
-                        </SocketAPIProvider>
-                    </AuthProvider>
-                </Provider>
-            </I18nextProvider>
-        </React.StrictMode>
-    );
+  const clientSocket = io(server);
+  const i18n = i18next.createInstance();
+  await i18n
+    .use(initReactI18next)
+    .init({
+      resources,
+      fallbackLng: 'ru',
+      interpolation: {
+        escapeValue: false,
+      },
+    });
+  console.log('i18 init: ', i18n);
+  return (
+    <React.StrictMode>
+      <I18nextProvider i18n={i18n} >
+        <Provider store={store}>
+          <AuthProvider>
+            <SocketAPIProvider socket={clientSocket}>
+              <HeaderNavbar/>
+              <RouterProvider
+                router={router}
+                fallbackElement={<ErrorPage/>}
+              />
+              <ToastContainer/>
+            </SocketAPIProvider>
+          </AuthProvider>
+        </Provider>
+      </I18nextProvider>
+    </React.StrictMode>
+  );
 };
 
 export default init;
