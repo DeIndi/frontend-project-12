@@ -42,12 +42,17 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('userData');
     setUserData(null);
   };
+
+  const authContextValue = {
+    loggedIn,
+    logIn,
+    logOut,
+    getAuthHeader,
+    userData,
+  };
+
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{
-      loggedIn, logIn, logOut, getAuthHeader, userData,
-    }}
-    >
+    <AuthContext.Provider value={authContextValue}>
       { children }
     </AuthContext.Provider>
   );
