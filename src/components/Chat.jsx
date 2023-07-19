@@ -38,7 +38,7 @@ const Chat = () => {
       .catch((e) => {
         console.log('error: ', e);
       });
-  }, []);
+  }, [dispatch, headers, initChannels, initMessages, updateCurrentChannelId]);
 
   const initialValues = {
     body: '',
