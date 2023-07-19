@@ -43,12 +43,13 @@ const AuthProvider = ({ children }) => {
     setUserData(null);
   };
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <AuthContext.Provider value={{
       loggedIn, logIn, logOut, getAuthHeader, userData,
     }}
     >
       { children }
-    </AuthContext.Provider >
+    </AuthContext.Provider>
   );
 };
 
@@ -64,9 +65,9 @@ const router = createBrowserRouter([
   {
     path: '/',
     element:
-            <PrivateRoute >
-              <Chat />
-            </PrivateRoute >,
+  <PrivateRoute>
+    <Chat />
+  </PrivateRoute>,
     errorElement: <ErrorPage />,
   },
   {
@@ -100,22 +101,22 @@ const init = async () => {
     });
   console.log('i18 init: ', i18n);
   return (
-    <React.StrictMode >
-      <I18nextProvider i18n={ i18n } >
-        <Provider store={ store } >
-          <AuthProvider >
-            <SocketAPIProvider socket={ clientSocket } >
+    <React.StrictMode>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <AuthProvider>
+            <SocketAPIProvider socket={clientSocket}>
               <HeaderNavbar />
               <RouterProvider
-                router={ router }
-                fallbackElement={ <ErrorPage /> }
+                router={router}
+                fallbackElement={<ErrorPage />}
               />
               <ToastContainer />
-            </SocketAPIProvider >
-          </AuthProvider >
-        </Provider >
-      </I18nextProvider >
-    </React.StrictMode >
+            </SocketAPIProvider>
+          </AuthProvider>
+        </Provider>
+      </I18nextProvider>
+    </React.StrictMode>
   );
 };
 

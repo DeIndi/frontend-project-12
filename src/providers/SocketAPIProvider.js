@@ -44,12 +44,13 @@ const SocketAPIProvider = ({ socket, children }) => {
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <SocketAPIContext.Provider value={{
       createMessage, createChannel, removeChannel, renameChannel,
     }}
     >
       { children }
-    </SocketAPIContext.Provider >
+    </SocketAPIContext.Provider>
   );
 };
 
