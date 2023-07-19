@@ -28,6 +28,7 @@ const Chat = () => {
   const { initMessages } = messagesActions;
   useEffect(() => {
     console.log('Use Effect from Chat');
+
     axios.get(routes.dataPath(), { headers })
       .then((response) => {
         const { currentChannelId, channels, messages } = response.data;
@@ -38,7 +39,8 @@ const Chat = () => {
       .catch((e) => {
         console.log('error: ', e);
       });
-  }, [dispatch, headers, initChannels, initMessages, updateCurrentChannelId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const initialValues = {
     body: '',
