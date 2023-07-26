@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+// import { actions as messagesActions } from './messagesSlice';
 
 const initialChannelsState = {
   ids: [], entities: [], currentChannelId: 0,
@@ -10,14 +11,10 @@ const channelsSlice = createSlice({
   initialState: initialChannelsState,
   reducers: {
     initChannels(state, action) {
-      state.entities.length = 0;
-      state.entities.push(...action.payload);
+      state.entities = action.payload;
     },
     updateCurrentChannelId(state, action) {
       state.currentChannelId = action.payload;
-    },
-    getCurrentChannelId(state) {
-      return state.currentChannelId;
     },
     addChannel(state, action) {
       const { id, name } = action.payload;
@@ -37,12 +34,16 @@ const channelsSlice = createSlice({
         channelToRename.name = name;
       }
     },
-    updateChannel(state, action) {
-      const { channelId, data } = action.payload;
-      Object.assign(state.entities[channelId], data);
-    },
   },
+  /* extraReducers: (builder) => {
+    builder.addCase(messagesActions.removeChannel, (state, action) => {
+      const channelId = action.payload;
+      remove(state.entities, (message) => message.channelId === channelId);
+    });
+  }, */
 });
+
+export const getCurrentChannelId = (state) => state.currentChannelId;
 
 export const { reducer, actions } = channelsSlice;
 export default reducer;

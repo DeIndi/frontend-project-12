@@ -6,13 +6,14 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import filter from 'leo-profanity';
-import { useSocketAPI } from '../hooks';
+import { useAPI } from '../hooks';
 import { actions as modalsActions } from '../slices/modalsSlice';
 import 'react-toastify/dist/ReactToastify.css';
 
 const schema = (channels) => yup.object({
   name: yup
     .string()
+    .trim()
     .min(3, 'signUp.usernameConstraints')
     .max(20, 'signUp.usernameConstraints')
     .required('signUp.requiredField')
@@ -22,9 +23,8 @@ const schema = (channels) => yup.object({
 const AddChannelModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const socketAPI = useSocketAPI();
+  const socketAPI = useAPI();
   const channels = useSelector((state) => state.channels.entities.map((channel) => channel.name));
-  console.log('channels: ', channels);
   const [addFailed, setAddFailed] = useState(false);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
@@ -115,7 +115,7 @@ const AddChannelModal = () => {
 const RenameChannelModal = ({ modalData }) => {
   const { id } = modalData;
   const dispatch = useDispatch();
-  const socketAPI = useSocketAPI();
+  const socketAPI = useAPI();
   const { t } = useTranslation();
   const [renameFailed, setRenameFailed] = useState(false);
   const channels = useSelector((state) => state.channels.entities.map((channel) => channel.name));
@@ -204,7 +204,7 @@ const RenameChannelModal = ({ modalData }) => {
 
 const RemoveChannelModal = ({ modalData }) => {
   const dispatch = useDispatch();
-  const socketAPI = useSocketAPI();
+  const socketAPI = useAPI();
   const { t } = useTranslation();
   const { id, channel } = modalData;
   const onClose = () => {
@@ -270,8 +270,8 @@ const RemoveChannelModal = ({ modalData }) => {
 };
 
 const DispatchModal = () => {
-  const currentModal = useSelector((state) => state.modals.currentModal);
-  const modalData = useSelector((state) => state.modals.modalData);
+  const currentModal = useSelector((state) => state.modals.type);
+  const modalData = useSelector((state) => state.modals.data);
   const modalComponents = {
     add: AddChannelModal,
     rename: RenameChannelModal,

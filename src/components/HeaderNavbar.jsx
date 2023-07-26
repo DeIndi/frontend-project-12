@@ -12,6 +12,7 @@ const HeaderNavbar = () => {
     e.preventDefault();
     auth.logOut();
   };
+
   console.log('i18n.getResource', i18n.getResourceBundle('ru', 'translation'));
   return (
     <Navbar bg="dark" variant="dark">
@@ -20,9 +21,14 @@ const HeaderNavbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            { !auth.loggedIn ? <Nav.Link href="/login">{ t('headerNavBar.login') }</Nav.Link> : null }
-            { !auth.loggedIn ? <Nav.Link href="/signup">{ t('headerNavBar.register') }</Nav.Link> : null }
-            { auth.loggedIn ? <Nav.Link onClick={(e) => onLogOut(e)}>{ t('headerNavBar.logout') }</Nav.Link> : null }
+            { !auth.loggedIn
+              ? (
+                <>
+                  <Nav.Link href="/login">{ t('headerNavBar.login') }</Nav.Link>
+                  <Nav.Link href="/signup">{ t('headerNavBar.register') }</Nav.Link>
+                </>
+              )
+              : <Nav.Link onClick={(e) => onLogOut(e)}>{ t('headerNavBar.logout') }</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
       </Container>

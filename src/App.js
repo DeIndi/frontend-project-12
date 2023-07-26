@@ -1,14 +1,12 @@
 import {
   createBrowserRouter,
   RouterProvider,
-
   Navigate,
+  Outlet,
   useLocation,
 } from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
-import { io } from 'socket.io-client';
-import { server } from 'websocket';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
 import { ToastContainer } from 'react-toastify';
@@ -17,52 +15,21 @@ import SignUp from './components/SignUp';
 import HeaderNavbar from './components/HeaderNavbar';
 import Chat from './components/Chat';
 import ErrorPage from './components/ErrorPage';
-import { AuthContext } from './contexts';
+import AuthProvider from './providers/AuthProvider';
 import 'bootstrap';
 import store from './store';
 import resources from './locales/index.js';
 import { useAuth } from './hooks';
 import SocketAPIProvider from './providers/SocketAPIProvider';
 
-const AuthProvider = ({ children }) => {
-  const localUserData = JSON.parse(localStorage.getItem('userData'));
-  const [userData, setUserData] = useState(localUserData ?? null);
-  const loggedIn = !!userData;
-  const getAuthHeader = () => {
-    if (userData?.token) {
-      return { Authorization: `Bearer ${userData.token}` };
-    }
-    return {};
-  };
-  const logIn = (usrData) => {
-    setUserData(usrData);
-    localStorage.setItem('userData', JSON.stringify(usrData));
-  };
-  const logOut = () => {
-    localStorage.removeItem('userData');
-    setUserData(null);
-  };
-
-  const authContextValue = {
-    loggedIn,
-    logIn,
-    logOut,
-    getAuthHeader,
-    userData,
-  };
-
-  return (
-    <AuthContext.Provider value={authContextValue}>
-      { children }
-    </AuthContext.Provider>
-  );
-};
-
-const PrivateRoute = ({ children }) => {
+const loginPath = '/login';
+const PrivateRoute = () => {
   const auth = useAuth();
   const location = useLocation();
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    // TODO: кореектнее было бы использовать Outlet для отрисовни дочерних элементов (fixed)
+    // пути так же было бы классно вынести в константы — там сильно удобнее их рефакторить (fixed)
+    auth.loggedIn ? <Outlet /> : <Navigate to={loginPath} state={{ from: location }} />
   );
 };
 
@@ -70,9 +37,13 @@ const router = createBrowserRouter([
   {
     path: '/',
     element:
-  <PrivateRoute>
-    <Chat />
-  </PrivateRoute>,
+  <PrivateRoute />,
+    children: [
+      {
+        index: true,
+        element: <Chat />,
+      },
+    ],
     errorElement: <ErrorPage />,
   },
   {
@@ -92,8 +63,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const init = async () => {
-  const clientSocket = io(server);
+const init = async (clientSocket) => {
   const i18n = i18next.createInstance();
   await i18n
     .use(initReactI18next)

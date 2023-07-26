@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field } from 'formik';
 import filter from 'leo-profanity';
 import { Container } from 'react-bootstrap';
-import { useAuth, useSocketAPI } from '../hooks';
+import { useAuth, useAPI } from '../hooks';
 import routes from '../routes';
 import ChannelList from './ChannelList';
 import { DispatchModal } from './ChannelModal';
@@ -15,7 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Chat = () => {
   const auth = useAuth();
-  const socketAPI = useSocketAPI();
+  const socketAPI = useAPI();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { username } = auth.userData;

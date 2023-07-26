@@ -13,8 +13,7 @@ const messagesSlice = createSlice({
   initialState: initialMessagesState,
   reducers: {
     initMessages(state, action) {
-      state.entities.length = 0;
-      state.entities.push(...action.payload);
+      state.entities = action.payload;
     },
     addMessage(state, action) {
       const {
@@ -29,6 +28,11 @@ const messagesSlice = createSlice({
     builder.addCase(channelsActions.removeChannel, (state, action) => {
       const channelId = action.payload;
       remove(state.entities, (message) => message.channelId === channelId);
+    });
+    builder.addCase(channelsActions.initChannels, (state, action) => {
+      // const { channels, messages } = action.payload;
+      console.log('state:  ', state);
+      console.log('action.payload from messagesSlice: ', action.payload);
     });
   },
 });

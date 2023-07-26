@@ -55,7 +55,6 @@ const SignUp = () => {
     },
     validationSchema: schema,
   });
-    // TODO: в formik писать коды ошибок
   return (
     <div className="App">
       <div className="container d-flex justify-content-center align-items-center vh-100 mt-5">
