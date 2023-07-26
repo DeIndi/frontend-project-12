@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import channelsReducer from './slices/channelsSlice';
 import messagesReducer from './slices/messagesSlice';
 import modalsReducer from './slices/modalsSlice';
@@ -9,7 +10,9 @@ const rootReducer = combineReducers({
   messages: messagesReducer,
   modals: modalsReducer,
 });
-// TODO: вернуть configureStore
-const store = createStore(rootReducer);
+// TODO: вернуть configureStore (fixed)
+const store = configureStore(
+  { reducer: rootReducer },
+);
 
 export default store;
