@@ -51,26 +51,6 @@ const APIProvider = ({ socket, children }) => {
       socket.off('renameChannel', handleRenameChannel);
     };
   }, [socket, dispatch]);
-  socket.on('newMessage', (payload) => {
-    const {
-      body, channelId, id, username,
-    } = payload;
-    dispatch(messagesActions.addMessage({
-      body, channelId, id, username,
-    }));
-  });
-
-  socket.on('newChannel', (payload) => {
-    console.log(payload); // { id: 6, name: "new channel", removable: true }
-  });
-
-  socket.on('removeChannel', (payload) => {
-    console.log(payload); // { id: 6 };
-  });
-
-  socket.on('renameChannel', (payload) => {
-    console.log(payload); // { id: 7, name: "new name channel", removable: true }
-  });
 
   const createMessage = ({ body, channelId, username }) => {
     api.createMessage(socket, { body, channelId, username });
