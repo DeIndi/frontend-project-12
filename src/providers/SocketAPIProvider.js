@@ -27,15 +27,15 @@ const APIProvider = ({ socket, children }) => {
     };
 
     const handleNewChannel = (payload) => {
-      console.log(payload); // { id: 6, name: "new channel", removable: true }
+      console.log(payload);
     };
 
     const handleRemoveChannel = (payload) => {
-      console.log(payload); // { id: 6 };
+      console.log(payload);
     };
 
     const handleRenameChannel = (payload) => {
-      console.log(payload); // { id: 7, name: "new name channel", removable: true }
+      console.log(payload);
     };
 
     socket.on('newMessage', handleNewMessage);
@@ -44,7 +44,6 @@ const APIProvider = ({ socket, children }) => {
     socket.on('renameChannel', handleRenameChannel);
 
     return () => {
-      // Clean up event listeners when unmounting
       socket.off('newMessage', handleNewMessage);
       socket.off('newChannel', handleNewChannel);
       socket.off('removeChannel', handleRemoveChannel);
@@ -71,6 +70,7 @@ const APIProvider = ({ socket, children }) => {
     if (currChannelId === id) {
       dispatch(channelsActions.updateCurrentChannelId(1));
     }
+    // TODO: Как вынести хуки из компонента (нужно ли выносить)
   };
 
   const renameChannel = ({ id, name }) => {
