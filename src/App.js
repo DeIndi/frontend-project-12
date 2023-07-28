@@ -20,15 +20,14 @@ import 'bootstrap';
 import store from './store';
 import resources from './locales/index.js';
 import { useAuth } from './hooks';
-import SocketAPIProvider from './providers/SocketAPIProvider';
+import SocketAPIProvider from './providers/APIProvider';
+import SocketEventHandlers from './components/SocketEventHandlers';
 
 const loginPath = '/login';
 const PrivateRoute = () => {
   const auth = useAuth();
   const location = useLocation();
   return (
-    // TODO: кореектнее было бы использовать Outlet для отрисовни дочерних элементов (fixed)
-    // пути так же было бы классно вынести в константы — там сильно удобнее их рефакторить (fixed)
     auth.loggedIn ? <Outlet /> : <Navigate to={loginPath} state={{ from: location }} />
   );
 };
@@ -63,7 +62,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const init = async (clientSocket) => {
+const Init = async (clientSocket) => {
   const i18n = i18next.createInstance();
   await i18n
     .use(initReactI18next)
@@ -74,7 +73,9 @@ const init = async (clientSocket) => {
         escapeValue: false,
       },
     });
-  console.log('i18 init: ', i18n);
+
+  // eslint-disable-next-line max-len
+  // TODO: перенести сюда подписку на события (socket.on и dispatch) (перенесено в SocketEventHandlers)
   return (
     <React.StrictMode>
       <I18nextProvider i18n={i18n}>
@@ -82,6 +83,7 @@ const init = async (clientSocket) => {
           <AuthProvider>
             <SocketAPIProvider socket={clientSocket}>
               <HeaderNavbar />
+              <SocketEventHandlers clientSocket={clientSocket} />
               <RouterProvider
                 router={router}
                 fallbackElement={<ErrorPage />}
@@ -95,4 +97,4 @@ const init = async (clientSocket) => {
   );
 };
 
-export default init;
+export default Init;

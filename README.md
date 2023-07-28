@@ -8,7 +8,7 @@ Simple chat program. Lets users exchange text messages, switch channels, rename,
 has corresponding alert (implemented with toastify). Program uses routing to give users access to different pages of the application.
 
 Railway link:
-(Currently unavailable)
+[frontend-project-12-production-f032.up.railway.app]()
 
 ## Requirements
 
