@@ -12,12 +12,11 @@ const initialModalsState = {
   isVisible: false,
   data: null,
 };
-// TODO: modalData переименовать в data (fixed)
+
 const modalsSlice = createSlice({
   name: 'modals',
   initialState: initialModalsState,
   reducers: {
-    // TODO: давай вынесем отдельно тип откдываемой модалки (fixed)
     openModal(state, action) {
       console.log('action payload from openModal: ', action.payload);
       const { modal, data } = action.payload;
