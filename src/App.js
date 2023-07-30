@@ -21,7 +21,8 @@ import store from './store';
 import resources from './locales/index.js';
 import { useAuth } from './hooks';
 import SocketAPIProvider from './providers/APIProvider';
-import SocketEventHandlers from './components/SocketEventHandlers';
+import { actions as messagesActions } from './slices/messagesSlice';
+import { actions as channelsActions } from './slices/channelsSlice';
 
 const loginPath = '/login';
 const PrivateRoute = () => {
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-const Init = async (clientSocket) => {
+const init = async (clientSocket) => {
   const i18n = i18next.createInstance();
   await i18n
     .use(initReactI18next)
@@ -74,8 +75,40 @@ const Init = async (clientSocket) => {
       },
     });
 
-  // eslint-disable-next-line max-len
-  // TODO: перенести сюда подписку на события (socket.on и dispatch) (перенесено в SocketEventHandlers)
+  const currChannelId = store.getState().channels.currentChannelId;
+  clientSocket.on('newMessage', (payload) => {
+    const {
+      body, channelId, id, username,
+    } = payload;
+    store.dispatch(
+      messagesActions.addMessage({
+        body,
+        channelId,
+        id,
+        username,
+      }),
+    );
+  });
+
+  clientSocket.on('newChannel', (payload) => {
+    const { id, name } = payload;
+    store.dispatch(channelsActions.addChannel({ id, name }));
+    store.dispatch(channelsActions.updateCurrentChannelId(id));
+  });
+
+  clientSocket.on('removeChannel', (payload) => {
+    const { id } = payload;
+    store.dispatch(channelsActions.removeChannel(id));
+    if (currChannelId === id) {
+      store.dispatch(channelsActions.updateCurrentChannelId(1));
+    }
+  });
+
+  clientSocket.on('renameChannel', (payload) => {
+    const { id, name } = payload;
+    store.dispatch(channelsActions.renameChannel({ id, name }));
+  });
+
   return (
     <React.StrictMode>
       <I18nextProvider i18n={i18n}>
@@ -83,7 +116,6 @@ const Init = async (clientSocket) => {
           <AuthProvider>
             <SocketAPIProvider socket={clientSocket}>
               <HeaderNavbar />
-              <SocketEventHandlers clientSocket={clientSocket} />
               <RouterProvider
                 router={router}
                 fallbackElement={<ErrorPage />}
@@ -97,4 +129,4 @@ const Init = async (clientSocket) => {
   );
 };
 
-export default Init;
+export default init;
