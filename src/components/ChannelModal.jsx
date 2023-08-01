@@ -41,7 +41,7 @@ const AddChannelModal = () => {
         return;
       }
       try {
-        socketAPI.createChannel({ name: filter.clean(values.name) });
+        await socketAPI.createChannel({ name: filter.clean(values.name) });
         toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
         formik.setSubmitting(false);
@@ -135,10 +135,10 @@ const RenameChannelModal = ({ modalData }) => {
       }
       try {
         console.log('Channel renamed');
-        socketAPI.renameChannel({ id, name: filter.clean(values.name) });
+        await socketAPI.renameChannel({ id, name: filter.clean(values.name) });
         toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
         formik.setSubmitting(false);
-        dispatch(modalsActions.closeModal());
+        await dispatch(modalsActions.closeModal());
         setRenameFailed(false);
       } catch (error) {
         console.log('Channel renaming error');
@@ -217,10 +217,10 @@ const RemoveChannelModal = ({ modalData }) => {
     onSubmit: async () => {
       if (channel.removable) {
         try {
-          socketAPI.removeChannel(id);
+          await socketAPI.removeChannel(id);
           toast.success(t('channelModal.channelRemoveSuccess'));
           formik.setSubmitting(false);
-          dispatch(modalsActions.closeModal());
+          await dispatch(modalsActions.closeModal());
         } catch (e) {
           toast.error(t('channelModal.channelRemoveFail'));
         }
