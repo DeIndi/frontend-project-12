@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-// import { actions as messagesActions } from './messagesSlice';
 
 const initialChannelsState = {
   ids: [], entities: [], currentChannelId: 0,
@@ -35,12 +34,6 @@ const channelsSlice = createSlice({
       }
     },
   },
-  /* extraReducers: (builder) => {
-    builder.addCase(messagesActions.removeChannel, (state, action) => {
-      const channelId = action.payload;
-      remove(state.entities, (message) => message.channelId === channelId);
-    });
-  }, */
 });
 
 export const getCurrentChannelId = (state) => state.currentChannelId;

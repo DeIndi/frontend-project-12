@@ -29,11 +29,11 @@ const messagesSlice = createSlice({
       const channelId = action.payload;
       remove(state.entities, (message) => message.channelId === channelId);
     });
-    builder.addCase(channelsActions.initChannels, (state, action) => {
+    /* builder.addCase(channelsActions.initChannels, (state, action) => {
       // const { channels, messages } = action.payload;
       console.log('state:  ', state);
       console.log('action.payload from messagesSlice: ', action.payload);
-    });
+    }); */
   },
 });
 

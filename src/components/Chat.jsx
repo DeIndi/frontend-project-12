@@ -75,10 +75,10 @@ const Chat = () => {
             <div className="mt-auto px-5 py-3">
               <Formik
                 initialValues={initialValues}
-                onSubmit={(values, { resetForm }) => {
-                  console.log('test string');
+                onSubmit={async (values, { resetForm }) => {
                   // eslint-disable-next-line max-len
-                  socketAPI.createMessage({ body: filter.clean(values.body), channelId: currentChannel.id, username });
+                  const result = await socketAPI.createMessage({ body: filter.clean(values.body), channelId: currentChannel.id, username });
+                  console.log('result of createMessage: ', result);
                   resetForm();
                 }}
               >
