@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import filter from 'leo-profanity';
 import { useAPI } from '../hooks';
 import { actions as modalsActions } from '../slices/modalsSlice';
+import { actions as channelsActions } from '../slices/channelsSlice';
 import 'react-toastify/dist/ReactToastify.css';
 
 const schema = (channels) => yup.object({
@@ -220,6 +221,7 @@ const RemoveChannelModal = ({ modalData }) => {
           await socketAPI.removeChannel(id);
           toast.success(t('channelModal.channelRemoveSuccess'));
           formik.setSubmitting(false);
+          dispatch(channelsActions.updateCurrentChannelId(1));
           await dispatch(modalsActions.closeModal());
         } catch (e) {
           toast.error(t('channelModal.channelRemoveFail'));
