@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialChannelsState = {
-  ids: [], entities: [], currentChannelId: 0,
+  ids: [], entities: [], currentChannelId: 1,
 };
 
 const channelsSlice = createSlice({
@@ -10,7 +10,8 @@ const channelsSlice = createSlice({
   initialState: initialChannelsState,
   reducers: {
     initChannels(state, action) {
-      state.entities = action.payload;
+      const { channels } = action.payload;
+      state.entities = channels;
     },
     updateCurrentChannelId(state, action) {
       state.currentChannelId = action.payload;
@@ -35,8 +36,6 @@ const channelsSlice = createSlice({
     },
   },
 });
-
-export const getCurrentChannelId = (state) => state.currentChannelId;
 
 export const { reducer, actions } = channelsSlice;
 export default reducer;

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { remove } from 'lodash';
 import { actions as channelsActions } from './channelsSlice';
 
 const initialMessagesState = {
@@ -27,13 +26,16 @@ const messagesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(channelsActions.removeChannel, (state, action) => {
       const channelId = action.payload;
-      remove(state.entities, (message) => message.channelId === channelId);
+      state.entities = state.entities.filter((message) => message.channelId !== channelId);
+      state.ids = state.ids.filter((id) => state.entities[id].channelId !== channelId);
     });
-    /* builder.addCase(channelsActions.initChannels, (state, action) => {
-      // const { channels, messages } = action.payload;
-      console.log('state:  ', state);
-      console.log('action.payload from messagesSlice: ', action.payload);
-    }); */
+    builder.addCase(channelsActions.initChannels, (state, action) => {
+      console.log('state from extra reducer (init):  ', state);
+      console.log('action.payload from extra reducer (init): ', action.payload);
+      const { messages } = action.payload;
+      state.entities = messages;
+      state.ids = messages.map((message) => message.id);
+    });
   },
 });
 

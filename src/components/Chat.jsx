@@ -9,7 +9,6 @@ import { useAuth, useAPI } from '../hooks';
 import routes from '../routes';
 import ChannelList from './ChannelList';
 import { DispatchModal } from './ChannelModal';
-import { actions as messagesActions } from '../slices/messagesSlice.js';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -25,16 +24,15 @@ const Chat = () => {
   const currMessages = useSelector((state) => state.messages.entities
     .filter((message) => message.channelId === currentChannel.id));
   const { initChannels, updateCurrentChannelId } = channelsActions;
-  const { initMessages } = messagesActions;
   useEffect(() => {
     console.log('Use Effect from Chat');
 
     axios.get(routes.dataPath(), { headers })
       .then((response) => {
+        console.log('response.data: ', response.data);
         const { currentChannelId, channels, messages } = response.data;
         dispatch(updateCurrentChannelId(currentChannelId));
-        dispatch(initChannels(channels));
-        dispatch(initMessages(messages));
+        dispatch(initChannels({ channels, messages }));
       })
       .catch((e) => {
         console.log('error: ', e);
