@@ -32,7 +32,7 @@ const ChannelList = () => {
   };
 
   return (
-    <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex" id="channel-list">
+    <div className="col-5 col-md-3 border-end px-0 bg-light flex-column h-100 d-flex" id="channel-list">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{ t('channelList.channels') }</b>
         <button
@@ -104,7 +104,7 @@ const ChannelList = () => {
             </li>
           )
           : (
-            <li key={channel.id} className="nav-item w-100">
+            <li key={channel.id} className="nav-item w-100 d-flex">
               <Button
                 onClick={(e) => {
                   onChangeChannel(e, channel.id);
