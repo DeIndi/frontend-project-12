@@ -28,8 +28,6 @@ const messagesSlice = createSlice({
       state.entities = state.entities.filter((message) => message.channelId !== channelId);
     });
     builder.addCase(channelsActions.initChannels, (state, action) => {
-      console.log('state from extra reducer (init):  ', state);
-      console.log('action.payload from extra reducer (init): ', action.payload);
       const { messages } = action.payload;
       state.entities = messages;
     });
