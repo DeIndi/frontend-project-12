@@ -42,9 +42,9 @@ const AddChannelModal = () => {
         return;
       }
       try {
-        await socketAPI.createChannel({ name: filter.clean(values.name) });
+        const result = await socketAPI.createChannel({ name: filter.clean(values.name) });
+        dispatch(channelsActions.updateCurrentChannelId(result.data.id));
         toast.success(t('channelModal.channelAddSuccess'));
-        // dispatch(channelsActions.updateCurrentChannelId(result.data.id));
         dispatch(modalsActions.closeModal());
         formik.setSubmitting(false);
         setAddFailed(false);
