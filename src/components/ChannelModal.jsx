@@ -42,8 +42,8 @@ const AddChannelModal = () => {
         return;
       }
       try {
-        const result = await socketAPI.createChannel({ name: filter.clean(values.name) });
-        dispatch(channelsActions.updateCurrentChannelId(result.data.id));
+        const data = await socketAPI.createChannel({ name: filter.clean(values.name) });
+        dispatch(channelsActions.updateCurrentChannelId(data.id));
         toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
         formik.setSubmitting(false);
@@ -219,7 +219,7 @@ const RemoveChannelModal = ({ modalData }) => {
     onSubmit: async () => {
       if (channel.removable) {
         try {
-          await socketAPI.removeChannel(id);
+          await socketAPI.removeChannel({ id });
           toast.success(t('channelModal.channelRemoveSuccess'));
           formik.setSubmitting(false);
           dispatch(channelsActions.updateCurrentChannelId(1));
