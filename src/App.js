@@ -75,7 +75,6 @@ const init = async (clientSocket) => {
       },
     });
 
-  const currChannelId = store.getState().channels.currentChannelId;
   clientSocket.on('newMessage', (payload) => {
     const {
       body, channelId, id, username,
@@ -93,15 +92,11 @@ const init = async (clientSocket) => {
   clientSocket.on('newChannel', (payload) => {
     const { id, name } = payload;
     store.dispatch(channelsActions.addChannel({ id, name }));
-    store.dispatch(channelsActions.updateCurrentChannelId(id));
   });
 
   clientSocket.on('removeChannel', (payload) => {
     const { id } = payload;
     store.dispatch(channelsActions.removeChannel(id));
-    if (currChannelId === id) {
-      store.dispatch(channelsActions.updateCurrentChannelId(1));
-    }
   });
 
   clientSocket.on('renameChannel', (payload) => {

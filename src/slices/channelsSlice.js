@@ -14,6 +14,7 @@ const channelsSlice = createSlice({
       state.entities = channels;
     },
     updateCurrentChannelId(state, action) {
+      console.log('action payload: ', action.payload);
       state.currentChannelId = action.payload;
     },
     addChannel(state, action) {
@@ -22,6 +23,9 @@ const channelsSlice = createSlice({
     },
     removeChannel(state, action) {
       const channelId = action.payload;
+      if (state.currentChannelId === channelId) {
+        state.currentChannelId = 1;
+      }
       state.entities = state.entities.filter((channel) => channel.id !== channelId);
     },
     renameChannel(state, action) {

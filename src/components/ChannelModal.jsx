@@ -43,6 +43,7 @@ const AddChannelModal = () => {
       }
       try {
         const data = await socketAPI.createChannel({ name: filter.clean(values.name) });
+        console.log('data: ', data);
         dispatch(channelsActions.updateCurrentChannelId(data.id));
         toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
