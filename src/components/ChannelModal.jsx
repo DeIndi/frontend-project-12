@@ -10,6 +10,7 @@ import { useAPI } from '../hooks';
 import { actions as modalsActions } from '../slices/modalsSlice';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import 'react-toastify/dist/ReactToastify.css';
+import getChannelById from './channelListSelectors';
 
 const schema = (channels) => yup.object({
   name: yup
@@ -209,7 +210,11 @@ const RemoveChannelModal = ({ modalData }) => {
   const dispatch = useDispatch();
   const socketAPI = useAPI();
   const { t } = useTranslation();
-  const { id, channel } = modalData;
+  const { id } = modalData;
+  console.log('id: ', id);
+  const channels = useSelector((state) => state.channels.entities);
+  const channel = getChannelById(channels, id);
+  console.log('channel: ', channel);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as modalsActions } from '../slices/modalsSlice';
-import getChannelById from './channelListSelectors';
 
 const ChannelList = () => {
   const { t } = useTranslation();
@@ -18,8 +17,7 @@ const ChannelList = () => {
   };
   const onRemoveChannel = (e, id) => {
     e.preventDefault();
-    const channel = getChannelById(channels, id);
-    dispatch(modalsActions.openModal({ modal: 'remove', data: { id, channel } }));
+    dispatch(modalsActions.openModal({ modal: 'remove', data: { id } }));
   };
   const onRenameChannel = (e, id, name) => {
     e.preventDefault();

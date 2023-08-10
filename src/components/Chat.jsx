@@ -33,6 +33,7 @@ const Chat = () => {
         const { currentChannelId, channels, messages } = response.data;
         dispatch(updateCurrentChannelId(currentChannelId));
         dispatch(initChannels({ channels, messages }));
+        // TODO: обновление активного канала вынести в инит
       })
       .catch((e) => {
         console.log('error: ', e);

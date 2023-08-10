@@ -1,5 +1,5 @@
 import React from 'react';
-import { SocketAPIContext } from '../contexts';
+import { APIContext } from '../contexts';
 
 const APIProvider = ({ socket, children }) => {
   const withAcknowledgement = (socketFunc) => (...args) => new Promise((resolve, reject) => {
@@ -32,10 +32,11 @@ const APIProvider = ({ socket, children }) => {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <SocketAPIContext.Provider value={api}>
+    <APIContext.Provider value={api}>
       { children }
-    </SocketAPIContext.Provider>
+    </APIContext.Provider>
   );
 };
+// TODO: переименовать SocketAPI везде в API
 
 export default APIProvider;

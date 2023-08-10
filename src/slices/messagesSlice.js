@@ -10,9 +10,6 @@ const messagesSlice = createSlice({
   name: 'messages',
   initialState: initialMessagesState,
   reducers: {
-    initMessages(state, action) {
-      state.entities = action.payload;
-    },
     addMessage(state, action) {
       const {
         id, body, channelId, username,

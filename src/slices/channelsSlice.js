@@ -22,11 +22,11 @@ const channelsSlice = createSlice({
       state.entities.push({ id, name, removable: true });
     },
     removeChannel(state, action) {
-      const channelId = action.payload;
-      if (state.currentChannelId === channelId) {
+      const { id } = action.payload;
+      if (state.currentChannelId === id) {
         state.currentChannelId = 1;
       }
-      state.entities = state.entities.filter((channel) => channel.id !== channelId);
+      state.entities = state.entities.filter((channel) => channel.id !== id);
     },
     renameChannel(state, action) {
       const { id, name } = action.payload;
