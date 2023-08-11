@@ -11,6 +11,7 @@ import ChannelList from './ChannelList';
 import { DispatchModal } from './ChannelModal';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getCurrentChannel, getCurrentMessages } from '../selectors/selectors';
 
 const Chat = () => {
   const auth = useAuth();
@@ -19,14 +20,13 @@ const Chat = () => {
   const { t } = useTranslation();
   const { username } = auth.userData;
   const headers = auth.getAuthHeader();
-  const currentChannel = useSelector((state) => state.channels.entities
-    .find((channel) => channel.id === state.channels.currentChannelId));
-  const currMessages = useSelector((state) => state.messages.entities
-    .filter((message) => message.channelId === currentChannel.id));
+  // TODO: если канала еще нет, отображать Loader
+  // TODO: вынести все useSelector
+  const currentState = useSelector((state) => state);
+  const currentChannel = getCurrentChannel(currentState);
+  const currMessages = getCurrentMessages(currentState);
   const { initChannels, updateCurrentChannelId } = channelsActions;
   useEffect(() => {
-    console.log('Use Effect from Chat');
-
     axios.get(routes.dataPath(), { headers })
       .then((response) => {
         console.log('response.data: ', response.data);

@@ -22,7 +22,8 @@ const channelsSlice = createSlice({
       state.entities.push({ id, name, removable: true });
     },
     removeChannel(state, action) {
-      const { id } = action.payload;
+      console.log('action: ', action);
+      const id = action.payload;
       if (state.currentChannelId === id) {
         state.currentChannelId = 1;
       }

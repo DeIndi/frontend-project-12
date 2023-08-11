@@ -10,7 +10,9 @@ import { useAPI } from '../hooks';
 import { actions as modalsActions } from '../slices/modalsSlice';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import 'react-toastify/dist/ReactToastify.css';
-import getChannelById from './channelListSelectors';
+import {
+  getChannelById, getChannels, getCurrentModal, getModalData,
+} from '../selectors/selectors';
 
 const schema = (channels) => yup.object({
   name: yup
@@ -24,9 +26,10 @@ const schema = (channels) => yup.object({
 
 const AddChannelModal = () => {
   const { t } = useTranslation();
+  const currentState = useSelector((state) => state);
   const dispatch = useDispatch();
   const socketAPI = useAPI();
-  const channels = useSelector((state) => state.channels.entities.map((channel) => channel.name));
+  const channels = getChannels(currentState);
   const [addFailed, setAddFailed] = useState(false);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
@@ -122,7 +125,8 @@ const RenameChannelModal = ({ modalData }) => {
   const socketAPI = useAPI();
   const { t } = useTranslation();
   const [renameFailed, setRenameFailed] = useState(false);
-  const channels = useSelector((state) => state.channels.entities.map((channel) => channel.name));
+  const currentState = useSelector((state) => state);
+  const channels = getChannels(currentState);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };
@@ -279,8 +283,9 @@ const RemoveChannelModal = ({ modalData }) => {
 };
 
 const DispatchModal = () => {
-  const currentModal = useSelector((state) => state.modals.type);
-  const modalData = useSelector((state) => state.modals.data);
+  const currentState = useSelector((state) => state);
+  const currentModal = getCurrentModal(currentState);
+  const modalData = getModalData(currentState);
   const modalComponents = {
     add: AddChannelModal,
     rename: RenameChannelModal,
