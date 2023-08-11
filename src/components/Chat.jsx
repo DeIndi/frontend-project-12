@@ -8,6 +8,7 @@ import { Container } from 'react-bootstrap';
 import { useAuth, useAPI } from '../hooks';
 import routes from '../routes';
 import ChannelList from './ChannelList';
+import MessagesList from './MessagesList';
 import { DispatchModal } from './ChannelModal';
 import { actions as channelsActions } from '../slices/channelsSlice.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -61,23 +62,13 @@ const Chat = () => {
                 { `${t('channelList.messages')}: ${currMessages.length}` }
               </span>
             </div>
-            <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-              { /* eslint-disable-next-line no-shadow */ }
-              { currMessages.map(({ id, username, body }) => (
-                <div key={id}>
-                  <b>{ username }</b>
-                  { ': ' }
-                  { body }
-                </div>
-              )) }
-            </div>
+            <MessagesList currMessages={currMessages} />
             <div className="mt-auto px-5 py-3">
               <Formik
                 initialValues={initialValues}
                 onSubmit={async (values, { resetForm }) => {
                   // eslint-disable-next-line max-len
-                  const result = await socketAPI.createMessage({ body: filter.clean(values.body), channelId: currentChannel.id, username });
-                  console.log('result of createMessage: ', result);
+                  await socketAPI.createMessage({ body: filter.clean(values.body), channelId: currentChannel.id, username });
                   resetForm();
                 }}
               >
