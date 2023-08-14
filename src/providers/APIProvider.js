@@ -37,6 +37,5 @@ const APIProvider = ({ socket, children }) => {
     </APIContext.Provider>
   );
 };
-// TODO: переименовать SocketAPI везде в API
 
 export default APIProvider;

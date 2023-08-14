@@ -10,26 +10,23 @@ import { useAPI } from '../hooks';
 import { actions as modalsActions } from '../slices/modalsSlice';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  getChannelById, getChannels, getCurrentModal, getModalData,
-} from '../selectors/selectors';
+import { getChannelById, getChannelsNames, getCurrentModal } from '../selectors/selectors';
 
-const schema = (channels) => yup.object({
+const schema = (channelsNames) => yup.object({
   name: yup
     .string()
     .trim()
     .min(3, 'signUp.usernameConstraints')
     .max(20, 'signUp.usernameConstraints')
     .required('signUp.requiredField')
-    .notOneOf(channels, 'ChannelModal.channelNotUnique'),
+    .notOneOf(channelsNames, 'ChannelModal.channelNotUnique'),
 });
 
 const AddChannelModal = () => {
   const { t } = useTranslation();
-  const currentState = useSelector((state) => state);
   const dispatch = useDispatch();
-  const socketAPI = useAPI();
-  const channels = getChannels(currentState);
+  const API = useAPI();
+  const channels = useSelector(getChannelsNames);
   const [addFailed, setAddFailed] = useState(false);
   const onClose = () => {
     dispatch(modalsActions.closeModal());
@@ -38,6 +35,7 @@ const AddChannelModal = () => {
     initialValues: {
       name: '',
     },
+    validationSchema: schema(channels),
     onSubmit: async (values) => {
       try {
         await formik.validateForm();
@@ -46,7 +44,7 @@ const AddChannelModal = () => {
         return;
       }
       try {
-        const data = await socketAPI.createChannel({ name: filter.clean(values.name) });
+        const data = await API.createChannel({ name: filter.clean(values.name) });
         console.log('data: ', data);
         dispatch(channelsActions.updateCurrentChannelId(data.id));
         toast.success(t('channelModal.channelAddSuccess'));
@@ -58,7 +56,6 @@ const AddChannelModal = () => {
         toast.error(t('channelModal.channelAddFail'));
       }
     },
-    validationSchema: schema(channels),
   });
   return (
     <>
@@ -122,18 +119,23 @@ const AddChannelModal = () => {
 const RenameChannelModal = ({ modalData }) => {
   const { id } = modalData;
   const dispatch = useDispatch();
-  const socketAPI = useAPI();
+  const API = useAPI();
   const { t } = useTranslation();
   const [renameFailed, setRenameFailed] = useState(false);
-  const currentState = useSelector((state) => state);
-  const channels = getChannels(currentState);
+  // Валидация по имени
+  // TODO: селектор передается непосредственно в useSelector
+  const channelNames = useSelector(getChannelsNames);
+  const channel = useSelector(getChannelById(id));
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };
   const formik = useFormik({
     initialValues: {
-      name: '',
+      // TODO: отображаем предыдущее название
+      name: channel.name,
     },
+    // TODO: валидация по именам, а не по самим каналам
+    validationSchema: schema(channelNames),
     onSubmit: async (values) => {
       try {
         await formik.validateForm();
@@ -143,7 +145,7 @@ const RenameChannelModal = ({ modalData }) => {
       }
       try {
         console.log('Channel renamed');
-        await socketAPI.renameChannel({ id, name: filter.clean(values.name) });
+        await API.renameChannel({ id, name: filter.clean(values.name) });
         toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
         formik.setSubmitting(false);
         await dispatch(modalsActions.closeModal());
@@ -154,7 +156,6 @@ const RenameChannelModal = ({ modalData }) => {
         setRenameFailed(true);
       }
     },
-    validationSchema: schema(channels),
   });
   return (
     <>
@@ -212,13 +213,10 @@ const RenameChannelModal = ({ modalData }) => {
 
 const RemoveChannelModal = ({ modalData }) => {
   const dispatch = useDispatch();
-  const socketAPI = useAPI();
+  const API = useAPI();
   const { t } = useTranslation();
   const { id } = modalData;
-  console.log('id: ', id);
-  const channels = useSelector((state) => state.channels.entities);
-  const channel = getChannelById(channels, id);
-  console.log('channel: ', channel);
+  const channel = useSelector(getChannelById(id));
   const onClose = () => {
     dispatch(modalsActions.closeModal());
   };
@@ -229,7 +227,7 @@ const RemoveChannelModal = ({ modalData }) => {
     onSubmit: async () => {
       if (channel.removable) {
         try {
-          await socketAPI.removeChannel({ id });
+          await API.removeChannel({ id });
           toast.success(t('channelModal.channelRemoveSuccess'));
           formik.setSubmitting(false);
           dispatch(channelsActions.updateCurrentChannelId(1));
@@ -283,17 +281,15 @@ const RemoveChannelModal = ({ modalData }) => {
 };
 
 const DispatchModal = () => {
-  const currentState = useSelector((state) => state);
-  const currentModal = getCurrentModal(currentState);
-  const modalData = getModalData(currentState);
+  const currentModal = useSelector(getCurrentModal);
   const modalComponents = {
     add: AddChannelModal,
     rename: RenameChannelModal,
     remove: RemoveChannelModal,
   };
 
-  const ModalComponent = modalComponents[currentModal];
+  const ModalComponent = modalComponents[currentModal.type];
 
-  return ModalComponent ? <ModalComponent modalData={modalData} /> : null;
+  return ModalComponent ? <ModalComponent modalData={currentModal.data} /> : null;
 };
 export { DispatchModal, AddChannelModal, RenameChannelModal };
