@@ -10,7 +10,6 @@ const channelsSlice = createSlice({
   initialState: initialChannelsState,
   reducers: {
     initChannels(state, action) {
-      // TODO: устанавливаем текущий канал в момент инициализации
       const { channels, currentChannelId } = action.payload;
       state.entities = channels;
       state.currentChannelId = currentChannelId;

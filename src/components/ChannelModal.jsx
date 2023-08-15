@@ -45,7 +45,6 @@ const AddChannelModal = () => {
       }
       try {
         const data = await API.createChannel({ name: filter.clean(values.name) });
-        console.log('data: ', data);
         dispatch(channelsActions.updateCurrentChannelId(data.id));
         toast.success(t('channelModal.channelAddSuccess'));
         dispatch(modalsActions.closeModal());
@@ -122,8 +121,6 @@ const RenameChannelModal = ({ modalData }) => {
   const API = useAPI();
   const { t } = useTranslation();
   const [renameFailed, setRenameFailed] = useState(false);
-  // Валидация по имени
-  // TODO: селектор передается непосредственно в useSelector
   const channelNames = useSelector(getChannelsNames);
   const channel = useSelector(getChannelById(id));
   const onClose = () => {
@@ -131,10 +128,8 @@ const RenameChannelModal = ({ modalData }) => {
   };
   const formik = useFormik({
     initialValues: {
-      // TODO: отображаем предыдущее название
       name: channel.name,
     },
-    // TODO: валидация по именам, а не по самим каналам
     validationSchema: schema(channelNames),
     onSubmit: async (values) => {
       try {
@@ -144,14 +139,12 @@ const RenameChannelModal = ({ modalData }) => {
         return;
       }
       try {
-        console.log('Channel renamed');
         await API.renameChannel({ id, name: filter.clean(values.name) });
         toast.success(`${t('channelModal.channelRenameSuccess')}, ${filter.clean(values.name)}`);
         formik.setSubmitting(false);
         await dispatch(modalsActions.closeModal());
         setRenameFailed(false);
       } catch (error) {
-        console.log('Channel renaming error');
         toast.error(`${t('channelModal.channelRenameFail')}, ${filter.clean(values.name)}`);
         setRenameFailed(true);
       }

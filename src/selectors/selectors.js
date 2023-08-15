@@ -1,5 +1,3 @@
-// TODO: базово селекторы зависят от состояния и являются чистыми фукциями
-
 const getChannelById = (id) => (state) => state.channels.entities.find((c) => c.id === id);
 
 const getCurrentChannel = (state) => state.channels.entities

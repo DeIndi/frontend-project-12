@@ -24,7 +24,6 @@ const Chat = () => {
   const { t } = useTranslation();
   const { username } = auth.userData;
   const headers = auth.getAuthHeader();
-  // TODO: если канала еще нет, отображать Loader
   const currentChannel = useSelector(getCurrentChannel);
   const currMessages = useSelector(getCurrentMessages);
   const { initChannels } = channelsActions;
@@ -34,7 +33,7 @@ const Chat = () => {
         dispatch(initChannels(response.data));
       })
       .catch((e) => {
-        console.log('error: ', e);
+        console.error('error: ', e);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

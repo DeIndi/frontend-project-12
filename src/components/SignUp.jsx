@@ -37,20 +37,15 @@ const SignUp = () => {
       passwordConfirmation: '',
     },
     onSubmit: async (values) => {
-      formik.validateForm().then((errors) => {
-        if (Object.keys(errors).length !== 0) {
-          console.log('Validation errors:', errors);
-        }
-      });
+      await formik.validateForm();
       try {
         const response = await axios.post(routes.signupPath(), values);
-        console.log('response after registration: ', response.data);
         const userData = response.data;
         auth.logIn(userData);
         navigate('/');
         navigate(0);
       } catch (e) {
-        console.log('error: ', e);
+        console.error('error: ', e);
       }
     },
     validationSchema: schema,

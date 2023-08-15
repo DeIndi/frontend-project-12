@@ -6,14 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks';
 
 const HeaderNavbar = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const auth = useAuth();
   const onLogOut = (e) => {
     e.preventDefault();
     auth.logOut();
   };
-
-  console.log('i18n.getResource', i18n.getResourceBundle('ru', 'translation'));
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
